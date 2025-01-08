@@ -13,3 +13,8 @@ add your favorite places and each of your credit cards makes it easy.
 ### Design
 
 ![Mock](cardcashMockUI.jpeg)
+
+### Technologies
+
+-HTML: 3-5 HTML pages for structure. Login, main page, and then location and card manage pages. 
+-CSS: Styling that will help the user know exaclty how to use the application. Good space and colors.
