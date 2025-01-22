@@ -33,4 +33,4 @@ add your favorite places and each of your credit cards makes it easy.
 - Authentication: Allow user to login and enter a password
 - Database: store the users cards and locations. Also stores at what locations users make purchases. 
 - Websocket Data: Show the most popular card-location combos on a chart. Each time a user makes a purchase at a location it 
-will add this to a chart. 
+will add this to a chart.  
