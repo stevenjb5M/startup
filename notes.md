@@ -16,4 +16,5 @@ Run git push
 - Link to update Caddy https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md
 
 # HTML 
--Add notes here
+-Use UI list for lists and each child can be a LI
+-BR is for spaces between things
