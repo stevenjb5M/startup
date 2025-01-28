@@ -20,3 +20,14 @@ Run git push
 -BR is for spaces between things
 -Javascript can either be in the html page or a seperate file
 -A link tag with a href can carry you from page to page
+
+## HTML deliverable
+
+For this deliverable I built out the structure of my application using HTML.
+
+- [x] **HTML pages** - 5 HTML page that represent the ability to login, view the main page, view the leaderboard, manage cards and locations.
+- [x] **Links** - The login page automatically links to the main page. The main page continues from there to other pages
+- [x] **Text** - Text describes important data to the user
+- [x] **Images** - We have a logo on the login screen, as well as a icon on the main screen
+- [x] **DB/Login** - Input box and submit button for login. The locations and cards will be stored on the database
+- [x] **WebSocket** - The top 3 location that people buy at will be displayed on the leaderboard
