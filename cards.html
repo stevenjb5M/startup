@@ -23,10 +23,19 @@
     </ul>
 
     <br />
+    <p>** These buttons open the card popup</p>
+
     <button type="button">Add</button>
     <br />
     <button type="button">Remove</button>
 
+    <div id="popup" style="display: none;">
+      <h3>Enter Card Name</h3>
+      <input type="text" id="locationName" placeholder="Location name" />
+      <br />
+      <button type="button" onclick="addLocation()">Add Card</button>
+      <button type="button" onclick="closePopup()">Close</button>
+  </div>
 
     </main>
 
