@@ -18,3 +18,4 @@ Run git push
 # HTML 
 -Use UI list for lists and each child can be a LI
 -BR is for spaces between things
+-Javascript can either be in the html page or a seperate file
