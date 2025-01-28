@@ -13,7 +13,9 @@
     </header>
 
     <main>
-  
+        <a href="main.html">
+            <button type="button">Back</button>
+        </a>
     <ul>
         <li>Amazon</li>
         <li>Walmart</li>
@@ -27,6 +29,13 @@
     <br />
     <button type="button">Remove</button>
 
+    <div id="popup" style="display: none;">
+        <h3>Enter Location Name</h3>
+        <input type="text" id="locationName" placeholder="Location name" />
+        <br />
+        <button type="button" onclick="addLocation()">Add Location</button>
+        <button type="button" onclick="closePopup()">Close</button>
+    </div>
 
     </main>
 
