@@ -14,3 +14,6 @@ Run git push
 - Domian name is cardcash.click
 - Use Route 53 on amazon to manage domain names
 - Link to update Caddy https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md
+
+# HTML 
+-Add notes here
