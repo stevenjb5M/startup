@@ -53,9 +53,9 @@ For this deliverable I properly styled the application into its final appearance
 
 - [x] **Header, footer, and main content body** added main.css to every page. 
 -Login page now has colors and it is aligned center. I also made the header pink and centered. Made the footer pink and centered as well. 
-- [x] **Navigation elements** - I dropped the underlines and changed the color for anchor elements.
+- [x] **Navigation elements** - All navigation buttons are pink with black text and a border radius
 - [x] **Responsive to window resizing** - My app looks great on all window sizes and devices
 - [x] **Application elements** - Used good contrast and whitespace
 - [x] **Application text content** - Consistent fonts
-- [ ] **Application images** - Still don't have images and so no styling here. 😔
+- [x] **Application images** - Still don't have images and so no styling here. 😔
 

@@ -12,6 +12,7 @@ header {
 
 main {
     height: 80vh;
+    display: grid;
 }
 
 footer {
@@ -33,7 +34,7 @@ footer {
 }
 
 button {
-    height: 35px;
+    height: 40px;
     background-color: #ff68f6;
     border-radius: 5px;
     border-width: 0;
@@ -48,21 +49,33 @@ button {
 }
 
 #leaderboard-button-div {
-    width: 100vw;
-    display: grid;
-    justify-content: end;
+    display: flex;
+    justify-content: center;
     align-content: center;
-}
-
-#leaderboard-button {
-    width: 40px;
-    height: 40px;
-    margin-right: 16px;
-    margin-top: 16px;
+    align-self: end;
+    padding: 8px;
 }
 
 #main-div {
     display: grid;
     justify-content: center;
-    margin-top: 32px;
+    margin-top: 64px;
+}
+
+#dropdown {
+    height: 50px;
+    border-radius: 10px;
+}
+
+.main-buttons {
+    width: 150px;
+}
+
+#leaderboard-link {
+    display: grid;
+    align-content: center;
+}
+
+.icon-button{
+    width: 40px;
 }

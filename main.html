@@ -15,14 +15,10 @@
     </header>
 
     <main>
-      <div id="leaderboard-button-div">
-        <a  href="leaderboard.html">
-          <img id="leaderboard-button" src="chart-simple-solid.svg" alt="Description of image" />
-        </a>
-      </div>
+      
      
     <div id="main-div">
-      <select title="Location" name="location_selection">
+      <select id="dropdown" title="Location" name="location_selection">
         <option value="" disabled selected>Select Location (Database data)</option>
         <option value="walmart">Walmart</option>
       </select>
@@ -37,16 +33,24 @@
       <br />
   
       <br />
-      <a href="locations.html">
-          <button type="button">Manage Locations</button>
-      </a>
-  
-      <a href="cards.html">
-          <button type="button">Manage Cards</button>
-      </a>
+      
     </div> 
 
-    
+    <div id="leaderboard-button-div">
+      <a id="leaderboard-link" href="leaderboard.html"></a>
+        <img class="icon-button" src="chart-simple-solid.svg" alt="Description of image" />
+      </a>
+      <a href="locations.html">
+        <button class="main-buttons" type="button">Manage Locations</button>
+    </a>
+
+    <a href="cards.html">
+        <button class="main-buttons" type="button">Manage Cards</button>
+    </a>
+      <a id="leaderboard-link" href="leaderboard.html">
+        <img class="icon-button" src="chart-simple-solid.svg" alt="Description of image" />
+      </a>
+    </div>
 
 
     </main>
