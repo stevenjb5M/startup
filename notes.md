@@ -32,3 +32,26 @@ For this deliverable I built out the structure of my application using HTML.
 - [x] **Images** - We have a logo on the login screen, as well as a icon on the main screen
 - [x] **DB/Login** - Input box and submit button for login. The locations and cards will be stored on the database
 - [x] **WebSocket** - The top 3 location that people buy at will be displayed on the leaderboard
+
+## CSS Notes
+-Animations can be made using keyframes. @keyframes fly-from-left {
+  0% {
+    transform: translateX(-200%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+-
+
+## CSS deliverable
+
+For this deliverable I properly styled the application into its final appearance.
+
+- [x] **Header, footer, and main content body**
+- [x] **Navigation elements** - I dropped the underlines and changed the color for anchor elements.
+- [x] **Responsive to window resizing** - My app looks great on all window sizes and devices
+- [x] **Application elements** - Used good contrast and whitespace
+- [x] **Application text content** - Consistent fonts
+- [ ] **Application images** - Still don't have images and so no styling here. 😔
+
