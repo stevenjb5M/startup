@@ -6,6 +6,7 @@
     <title>Card Cash Login</title>
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="index.css" />
 
   </head>
   <body>
@@ -16,19 +17,17 @@
     </header>
 
     <main>
-      <img src="piggy-bank-solid.svg" alt="Description of image" />
+      <div id="login-screen">
+        <img id="piggy-image" src="piggy-bank-solid.svg" alt="Description of image" />
 
-      <form method="get" action="play.html">
-        <div>
+        <form id="form" method="get" action="play.html">
           <span>Email</span>
-          <input type="text" placeholder="your@email.com" />
-        </div>
-        <div>
+          <input id="email-input" type="text" placeholder="your@email.com" />
           <span>Password</span>
-          <input type="password" placeholder="password" />
-        </div>
-        <button type="submit" formaction="main.html">Login</button>
-      </form>
+          <input id="password-input" type="password" placeholder="password" />
+          <button id="login-button" type="submit" formaction="main.html">Login</button>
+        </form>
+      </div>
     </main>
 
     <footer>

@@ -1,0 +1,38 @@
+#piggy-image {
+    width: 200px;
+    margin: 25px;
+    justify-self: center;
+}
+
+#form {
+    display: grid;
+    align-content: space-evenly;
+    height: 200px;
+}
+
+#email-input {
+    height: 25px;
+    font-size: 16px;
+    width: 100%;
+}
+
+#password-input {
+    height: 25px;
+    font-size: 16px;
+    width: 100%;
+}
+
+span {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#login-button {
+    height: 35px;
+    background-color: #ff68f6;
+    border-radius: 5px;
+    border-width: 0;
+    width: 75px;
+    justify-self: center;
+    margin: 25px;
+}

@@ -1,0 +1,16 @@
+body {
+    margin: 0px;
+}
+
+header {
+    justify-content: center;
+    display: grid;
+    background-color: #ff68f626;
+    /* border-bottom: #ff68f6 1px solid; */
+    border-radius: 0px 0px 10px 10px;
+}
+
+main {
+    justify-content: center;
+    display: grid;
+}
