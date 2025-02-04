@@ -52,10 +52,10 @@ For this deliverable I built out the structure of my application using HTML.
 For this deliverable I properly styled the application into its final appearance.
 
 - [x] **Header, footer, and main content body** added main.css to every page. 
--Login page now has colors and it is aligned center. I also made the header pink and centered. Made the footer pink and centered as well. 
-- [x] **Navigation elements** - All navigation buttons are pink with black text and a border radius
-- [x] **Responsive to window resizing** - My app looks great on all window sizes and devices
+-Login page now has colors and it is aligned center. I also made the header pink and centered. Made the footer pink and centered as well. The main content of the main page has been styled. 
+- [x] **Navigation elements** - All navigation buttons are pink with black text and a border radius. The navigation menu is on the bottom of the main page. 
+- [x] **Responsive to window resizing** - My app looks great on all window sizes and devices. It should scale automatically. 
 - [x] **Application elements** - Used good contrast and whitespace
 - [x] **Application text content** - Consistent fonts
-- [x] **Application images** - Still don't have images and so no styling here. 😔
+- [x] **Application images** - Navigation buttons have icons
 
