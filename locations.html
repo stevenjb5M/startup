@@ -6,6 +6,8 @@
     <title>Card Cash Locations</title>
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="locations.css" />
+
 
   </head>
   <body>
@@ -15,22 +17,26 @@
     </header>
 
     <main>
-        <a href="main.html">
-            <button type="button">Back</button>
-        </a>
-    <ul>
-        <li>Amazon</li>
-        <li>Walmart</li>
-        <li>Target</li>
-        <li>Best Buy</li>
-        <li>Costco</li>
-    </ul>
+        
+    <div id="locations-div">
+      <h2 id="locations-title">Your Locations</h2>
+      <ul id="locations-list">
+        <li class="location">Amazon</li>
+        <li class="location">Walmart</li>
+        <li class="location">Smiths</li>
+       </ul>
 
-    <br />
-    <p>** These buttons open the location popup</p>
-    <button type="button">Add</button>
-    <br />
-    <button type="button">Remove</button>
+       <div id="add-remove-buttons">
+        <a class="icon-link" href="index.html">
+          <img class="icon-button" src="arrow-rotate-left-solid.svg" alt="Description of image" />
+        </a>
+        <a class="icon-link" href="index.html"></a>
+          <img class="icon-button" src="arrow-rotate-left-solid.svg" alt="Description of image" />
+        </a>
+       </div>
+       
+    </div>
+    
 
     <div id="popup" style="display: none;">
         <h3>Enter Location Name</h3>
@@ -40,13 +46,30 @@
         <button type="button" onclick="closePopup()">Close</button>
     </div>
 
+    <nav id="leaderboard-button-div">
+      <a class="icon-link" href="index.html">
+        <img class="icon-button" src="arrow-rotate-left-solid.svg" alt="Description of image" />
+      </a>
+      <a class="icon-link" href="locations.html">
+        <img class="icon-button" src="store-solid.svg" alt="Description of image" />
+      </a>
+
+    <a class="icon-link" href="cards.html">
+        <img class="icon-button" src="credit-card-solid.svg" alt="Description of image" />
+    </a>
+      <a class="icon-link" href="leaderboard.html">
+        <img class="icon-button" src="chart-simple-solid.svg" alt="Description of image" />
+      </a>
+    </nav>
+
+
     </main>
 
     <footer>
-      <hr />
-      <span class="text-reset">Steven Brown</span>
-      <br />
-      <a href="https://github.com/stevenjb5M/startup.git">GitHub</a>
+      <div id="footer-info">
+        <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
+      </div>
+      
     </footer>
   </body>
 </html>
