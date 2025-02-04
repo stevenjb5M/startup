@@ -26,13 +26,3 @@ span {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
-#login-button {
-    height: 35px;
-    background-color: #ff68f6;
-    border-radius: 5px;
-    border-width: 0;
-    width: 75px;
-    justify-self: center;
-    margin: 25px;
-}

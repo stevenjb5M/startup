@@ -11,8 +11,7 @@ header {
 }
 
 main {
-    justify-content: center;
-    display: grid;
+    height: 80vh;
 }
 
 footer {
@@ -31,4 +30,39 @@ footer {
     text-align: center;
     margin: 10px;
     align-content: center;
+}
+
+button {
+    height: 35px;
+    background-color: #ff68f6;
+    border-radius: 5px;
+    border-width: 0;
+    justify-self: center;
+    margin: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+#where-text {
+    text-align: center;
+}
+
+#leaderboard-button-div {
+    width: 100vw;
+    display: grid;
+    justify-content: end;
+    align-content: center;
+}
+
+#leaderboard-button {
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    margin-top: 16px;
+}
+
+#main-div {
+    display: grid;
+    justify-content: center;
+    margin-top: 32px;
 }
