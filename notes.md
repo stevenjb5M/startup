@@ -42,7 +42,10 @@ For this deliverable I built out the structure of my application using HTML.
     transform: translateX(0%);
   }
 }
--
+-I learned from the simon project that you want to use a main.css for all of the pages that will include basic font and colors, and then each page has it's own css page as needed. 
+-# is used for an id, and . is used for a class. 
+-vh is for view height and will take up a percentage. 
+-em is a font sizing that will scale with the screen size
 
 ## CSS deliverable
 
