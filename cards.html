@@ -6,6 +6,8 @@
     <title>Card Cash Cards</title>
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="cards.css" />
+
 
   </head>
   <body>
@@ -15,37 +17,59 @@
     </header>
 
     <main>
-      <a href="main.html">
-        <button type="button">Back</button>
-    </a>
-    <ul>
-        <li>Wells Fargo</li>
-        <li>Discover</li>
-        <li>Ally</li>
-    </ul>
-
-    <br />
-    <p>** These buttons open the card popup</p>
-
-    <button type="button">Add</button>
-    <br />
-    <button type="button">Remove</button>
-
-    <div id="popup" style="display: none;">
-      <h3>Enter Card Name</h3>
-      <input type="text" id="locationName" placeholder="Location name" />
-      <br />
-      <button type="button" onclick="addLocation()">Add Card</button>
-      <button type="button" onclick="closePopup()">Close</button>
-  </div>
-
-    </main>
-
-    <footer>
-      <hr />
-      <span class="text-reset">Steven Brown</span>
-      <br />
-      <a href="https://github.com/stevenjb5M/startup.git">GitHub</a>
-    </footer>
+        
+      <div id="cards-div">
+        <h2 id="cards-title">Your Cards</h2>
+        <ul id="cards-list">
+          <li class="card">Ally</li>
+          <li class="card">Capitol One</li>
+          <li class="card">Wells Fargo</li>
+         </ul>
+  
+         <div id="add-remove-buttons">
+          <a class="icon-link" href="">
+            <img style="margin-right: 25px;" class="icon-button" src="plus-solid.svg" alt="Description of image" />
+          </a>
+          <a class="icon-link" href=""></a>
+            <img class="icon-button" src="minus-solid.svg" alt="Description of image" />
+          </a>
+         </div>
+         
+      </div>
+      
+  
+      <div id="popup" style="display: none;">
+          <h3>Enter Location Name</h3>
+          <input type="text" id="locationName" placeholder="Location name" />
+          <br />
+          <button type="button" onclick="addLocation()">Add Location</button>
+          <button type="button" onclick="closePopup()">Close</button>
+      </div>
+  
+      <nav id="leaderboard-button-div">
+        <a class="icon-link" href="main.html">
+          <img class="icon-button" src="arrow-rotate-left-solid.svg" alt="Description of image" />
+        </a>
+        <a class="icon-link" href="locations.html">
+          <img class="icon-button" src="store-solid.svg" alt="Description of image" />
+        </a>
+  
+      <a class="icon-link" href="cards.html">
+          <img class="icon-button" src="credit-card-solid.svg" alt="Description of image" />
+      </a>
+        <a class="icon-link" href="leaderboard.html">
+          <img class="icon-button" src="chart-simple-solid.svg" alt="Description of image" />
+        </a>
+      </nav>
+  
+  
+      </main>
+  
+      <footer>
+        <div id="footer-info">
+          <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
+        </div>
+        
+      </footer>
   </body>
 </html>
