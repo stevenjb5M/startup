@@ -20,7 +20,6 @@ footer {
     display: grid;
     background-color: #ff68f626;
     border-radius: 10px 10px 0px 0px;
-    min-height: 5vh;
 }
 
 #footer-info {

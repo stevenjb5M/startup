@@ -6,6 +6,8 @@
     <title>Card Cash Leaderboard</title>
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="leaderboard.css" />
+
   </head>
   <body>
     <header>
@@ -15,27 +17,46 @@
     </header>
 
     <main>
-        <a href="main.html">
-            <button type="button">Back</button>
+    
+
+    <main>
+      
+      <div id="leaderboard-div">
+        <h2 id="leaderboard-title">Leaderboard(Web Sockets)</h2>
+        <ul id="leader-list">
+          <li class="card">#1 Ally</li>
+          <li class="card">#2 Capitol One</li>
+          <li class="card">#3 Wells Fargo</li>
+         </ul>
+
+         <h2 id="dog-title">Random Dog Fact(Third party service)</h2>
+         <p id="dog-p">Dogs eat food</p>
+      </div>
+  
+      <nav id="leaderboard-button-div">
+        <a class="icon-link" href="main.html">
+          <img class="icon-button" src="house-solid.svg" alt="Description of image" />
         </a>
-    <ul>
-        <li>#1 Walmart</li>
-        <li>#2 Target</li>
-        <p>Enter other database locations here!
-             <br>Using web sockets to get the most up to date info!</p>
-
-        <p>Also a third part service here to get 1 random dog fact!</p>
-    </ul>
-
-    <br />
-
-    </main>
-
-    <footer>
-      <hr />
-      <span class="text-reset">Steven Brown</span>
-      <br />
-      <a href="https://github.com/stevenjb5M/startup.git">GitHub</a>
-    </footer>
+        <a class="icon-link" href="locations.html">
+          <img class="icon-button" src="store-solid.svg" alt="Description of image" />
+        </a>
+  
+      <a class="icon-link" href="cards.html">
+          <img class="icon-button" src="credit-card-solid.svg" alt="Description of image" />
+      </a>
+        <a class="icon-link" href="leaderboard.html">
+          <img class="icon-button" src="chart-simple-solid.svg" alt="Description of image" />
+        </a>
+      </nav>
+  
+  
+      </main>
+  
+      <footer>
+        <div id="footer-info">
+          <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
+        </div>
+        
+      </footer>
   </body>
 </html>

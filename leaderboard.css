@@ -1,0 +1,41 @@
+#leaderboard-div {
+    background-color: #ffe9fe;
+    margin: 32px;
+    border-radius: 10px;
+}
+
+#leaderboard-title {
+    margin-left: 16px;
+}
+
+.card {
+    height: 25px;
+    border: black 1px solid;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px;
+    font-size: 21px;
+}
+
+#leader-list {
+    list-style-type: none;
+    margin: 0;
+    margin-block-start: 0;
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+}
+
+#add-remove-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+#dog-title {
+    margin-left: 16px;
+}
+
+#dog-p {
+    margin-left:16px;
+}
