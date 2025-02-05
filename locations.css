@@ -26,9 +26,10 @@
 }
 
 #add-remove-buttons {
-    display: flex
-    ;
-        align-items: center;
-        justify-content: center;
-        margin-top: 32px;}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+}
+
 
