@@ -15,6 +15,10 @@ main {
     display: grid;
 }
 
+p {
+    font-size: 16px;
+}
+
 footer {
     justify-content: center;
     display: grid;

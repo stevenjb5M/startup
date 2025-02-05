@@ -56,6 +56,6 @@ For this deliverable I properly styled the application into its final appearance
 - [x] **Navigation elements** - All navigation buttons are pink with black text and a border radius. The navigation menu is on the bottom of the main page. 
 - [x] **Responsive to window resizing** - My app looks great on all window sizes and devices. It should scale automatically. 
 - [x] **Application elements** - Used good contrast and whitespace
-- [x] **Application text content** - Consistent fonts
-- [x] **Application images** - Navigation buttons have icons
+- [x] **Application text content** - Consistent fonts. 
+- [x] **Application images** - Navigation buttons have icons that are svgs. 
 
