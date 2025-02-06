@@ -34,3 +34,15 @@ add your favorite places and each of your credit cards makes it easy.
 - Database: store the users cards and locations. Also stores at what locations users make purchases. 
 - Websocket Data: Show the most popular card-location combos on a chart. Each time a user makes a purchase at a location it 
 will add this to a chart.  
+
+## CSS deliverable
+
+For this deliverable I properly styled the application into its final appearance.
+
+- [x] **Header, footer, and main content body** added main.css to every page. 
+-Login page now has colors and it is aligned center. I also made the header pink and centered. Made the footer pink and centered as well. The main content of the main page has been styled. 
+- [x] **Navigation elements** - All navigation buttons are pink with black text and a border radius. The navigation menu is on the bottom of the main page. 
+- [x] **Responsive to window resizing** - My app looks great on all window sizes and devices. It should scale automatically. 
+- [x] **Application elements** - Used good contrast and whitespace
+- [x] **Application text content** - Consistent fonts. 
+- [x] **Application images** - Navigation buttons have icons that are svgs. 
