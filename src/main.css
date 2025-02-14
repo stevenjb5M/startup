@@ -17,7 +17,7 @@ header {
 }
 
 main {
-    height: 80vh;
+    height: 75vh;
     display: grid;
 }
 
@@ -27,7 +27,6 @@ p {
 
 footer {
     justify-content: center;
-    display: grid;
     background-color: #ff68f626;
     border-radius: 10px 10px 0px 0px;
 }
@@ -38,7 +37,6 @@ footer {
 ;
     justify-content: center;
     text-align: center;
-    margin: 10px;
     align-content: center;
 }
 

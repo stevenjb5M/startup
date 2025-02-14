@@ -19,7 +19,7 @@ export default function App() {
                     <hr />
                 </header>
 
-                
+
 
                 <Routes>
                     <Route path='/' element={<Login />} />
@@ -31,6 +31,23 @@ export default function App() {
                 </Routes>
 
                 <footer>
+                    <nav id="leaderboard-button-div">
+                        <NavLink className="icon-link" to="/">
+                            <img className="icon-button" src="user-solid-2.svg" alt="Login" />
+                        </NavLink>
+                        <NavLink className="icon-link" to="/home">
+                            <img className="icon-button" src="house-solid.svg" alt="Home" />
+                        </NavLink>
+                        <NavLink className="icon-link" to="/locations">
+                            <img className="icon-button" src="store-solid.svg" alt="Locations" />
+                        </NavLink>
+                        <NavLink className="icon-link" to="/cards">
+                            <img className="icon-button" src="credit-card-solid.svg" alt="Cards" />
+                        </NavLink>
+                        <NavLink className="icon-link" to="/leaderboard">
+                            <img className="icon-button" src="chart-simple-solid.svg" alt="Leaderboard" />
+                        </NavLink>
+                    </nav>
                     <div id="footer-info">
                         <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
                     </div>
@@ -47,4 +64,4 @@ export default function App() {
 
 function NotFound() {
     return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
-  }
+}

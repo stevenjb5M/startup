@@ -1,10 +1,6 @@
 import React from 'react';
 import "../main.css";
 import { NavLink } from 'react-router-dom';
-import { Cards } from '../cards/cards';
-import { Leaderboard } from '../leaderboard/leaderboard';
-import { Locations } from '../locations/locations';
-import { Login } from '../login/login';
 
 export function Home() {
   return (
@@ -26,23 +22,6 @@ export function Home() {
         <br />
       </div> 
 
-      <nav id="leaderboard-button-div">
-        <NavLink className="icon-link" to="/">
-          <img className="icon-button" src="user-solid-2.svg" alt="Login" />
-        </NavLink>
-        <NavLink className="icon-link" to="/home">
-          <img className="icon-button" src="house-solid.svg" alt="Home" />
-        </NavLink>
-        <NavLink className="icon-link" to="/locations">
-          <img className="icon-button" src="store-solid.svg" alt="Locations" />
-        </NavLink>
-        <NavLink className="icon-link" to="/cards">
-          <img className="icon-button" src="credit-card-solid.svg" alt="Cards" />
-        </NavLink>
-        <NavLink className="icon-link" to="/leaderboard">
-          <img className="icon-button" src="chart-simple-solid.svg" alt="Leaderboard" />
-        </NavLink>
-      </nav>
     </main>
   );
 }
