@@ -1,0 +1,17 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "Get the highest cash back wherever you shop!",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.1.0"
+  }
+}
