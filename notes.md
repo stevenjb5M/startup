@@ -59,3 +59,7 @@ For this deliverable I properly styled the application into its final appearance
 - [x] **Application text content** - Consistent fonts. 
 - [x] **Application images** - Navigation buttons have icons that are svgs. 
 
+## React Phase one
+-This was a great overview of react
+-It is very similar to Angular which I use at work
+-I like it better since everything is on the same page. It is very clean. I'd like to see how to looks in a complex project. 

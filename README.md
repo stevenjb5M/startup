@@ -46,3 +46,11 @@ For this deliverable I properly styled the application into its final appearance
 - [x] **Application elements** - Used good contrast and whitespace
 - [x] **Application text content** - Consistent fonts. 
 - [x] **Application images** - Navigation buttons have icons that are svgs. 
+
+## 🚀 React part 1: Routing deliverable
+
+For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+
+- [x] **Bundled using Vite** - I did this
+- [x] **Components** - Moved them all over! 
+- [x] **Router** - Routing between all pages
