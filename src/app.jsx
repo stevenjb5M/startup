@@ -22,7 +22,7 @@ export default function App() {
                 
 
                 <Routes>
-                    <Route path='/' element={<Login />} exact />
+                    <Route path='/' element={<Login />} />
                     <Route path='/cards' element={<Cards />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/locations' element={<Locations />} />
@@ -39,7 +39,7 @@ export default function App() {
 
 
 
-            </div>;
+            </div>
         </BrowserRouter>
 
     );

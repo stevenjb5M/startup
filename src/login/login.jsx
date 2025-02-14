@@ -1,21 +1,26 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Login } from './login/login';
+import { useNavigate } from 'react-router-dom';
+import { Home } from '../home/home';
 
 export function Login() {
+  const navigate = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate('/home');
+  };
+
   return (
     <main>
       <div id="login-screen">
         <img id="piggy-image" src="piggy-bank-solid.svg" alt="Description of image" />
 
-        <form id="form" method="get" action="play.html">
+        <form id="form" onSubmit={handleSubmit}>
           <span>Email</span>
           <input id="email-input" type="text" placeholder="your@email.com" />
           <span>Password</span>
           <input id="password-input" type="password" placeholder="password" />
-          <NavLink to={Login}>
-            <button id="login-button" type="submit" formaction="main.html">Login</button>
-          </NavLink>
+          <button id="login-button" type="submit">Login</button>
         </form>
       </div>
     </main>
