@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import "../main.css";
 import { NavLink } from 'react-router-dom';
-import locationsData from '../data/locations.json'; // Adjust the path as needed
 
 export function Home() {
   const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
-    setLocations(locationsData);
+    const storedLocations = localStorage.getItem('locations');
+    if (storedLocations) {
+      setLocations(JSON.parse(storedLocations));
+    }
   }, []);
+
+  const handleSelectionChange = (event) => {
+    const selectedValue = event.target.value;
+    const location = locations.find(loc => loc.value === selectedValue);
+    setSelectedLocation(location);
+  };
 
   return (
     <main>
       <div id="main-div">
-        <select id="dropdown" title="Location" name="location_selection">
-          <option value="" disabled selected>Select Location (Database data)</option>
+        <select id="dropdown" title="Location" name="location_selection" onChange={handleSelectionChange} defaultValue="">
+          <option value="" disabled>Select Location (Database data)</option>
           {locations.map((location) => (
             <option key={location.value} value={location.value}>
               {location.label}
@@ -23,16 +32,17 @@ export function Home() {
         </select>
         <br />
     
-        <div id="cashback-div">
-            <h2>Walmart</h2>
-            <p>Use your wells fargo card!</p>
-            <p>You will earn 5% back</p>
-        </div>
+        {selectedLocation && (
+          <div id="cashback-div">
+            <h2>{selectedLocation.label}</h2>
+            <p>Use your Wells Fargo card!</p>
+            <p>You will earn back</p>
+          </div>
+        )}
     
         <br />
         <br />
       </div> 
-
     </main>
   );
 }
