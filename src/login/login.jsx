@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css'
+import { UserContext } from '../context/UserContext';
+
 
 export function Login() {
   const navigate = useNavigate();
+  const { setCurrentUser } = useContext(UserContext);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,6 +21,7 @@ export function Login() {
     if (event.nativeEvent.submitter.id === 'login-button') {
       const storedUser = JSON.parse(localStorage.getItem(email));
       if (storedUser && storedUser.email === email && storedUser.password === password) {
+        setCurrentUser(storedUser);
         navigate('/home');
       } else {
         alert('User does not exist or incorrect credentials');
@@ -31,6 +36,7 @@ export function Login() {
         else {
           localStorage.setItem(email, JSON.stringify(user));
           alert('Account created successfully');
+          setCurrentUser(user);
           navigate('/home');
         }
 

@@ -8,18 +8,21 @@ import { Leaderboard } from './leaderboard/leaderboard';
 import { Locations } from './locations/locations';
 import { Login } from './login/login';
 import { Home } from './home/home';
+import { UserProvider } from './context/UserContext';
 
 export default function App() {
     return (
-        <BrowserRouter>
-            <AppContent />
-        </BrowserRouter>
+        <UserProvider>
+            <BrowserRouter>
+                <AppContent />
+            </BrowserRouter>
+        </UserProvider>
     );
 }
 
 function AppContent() {
     const location = useLocation();
-
+    
     return (
         <div className="body bg-dark text-light">
             <header>

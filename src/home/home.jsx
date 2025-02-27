@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "../main.css";
 import { NavLink } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 export function Home() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const { currentUser } = useContext(UserContext);
 
-  useEffect(() => {
-    const storedLocations = localStorage.getItem('locations');
+  useEffect(() => {                                
+    const storedLocations = localStorage.getItem(currentUser.email + '/locations');
     if (storedLocations) {
       setLocations(JSON.parse(storedLocations));
     }
