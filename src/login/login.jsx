@@ -7,7 +7,38 @@ export function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate('/home');
+    const email = event.target.elements['email-input'].value;
+    const password = event.target.elements['password-input'].value;
+    const user = {
+      email,
+      password
+    };
+
+    if (event.nativeEvent.submitter.id === 'login-button') {
+      const storedUser = JSON.parse(localStorage.getItem(email));
+      if (storedUser && storedUser.email === email && storedUser.password === password) {
+        navigate('/home');
+      } else {
+        alert('User does not exist or incorrect credentials');
+      }
+    } else if (event.nativeEvent.submitter.id === 'create-account-button') {
+      if ((email !== "") && (password !== ""))
+      {
+        const existingUser = JSON.parse(localStorage.getItem(email));
+        if (existingUser) {
+          alert('User with this email already exists');
+        }
+        else {
+          localStorage.setItem(email, JSON.stringify(user));
+          alert('Account created successfully');
+          navigate('/home');
+        }
+
+      } else {
+        alert("Please enter a username and a password");
+      }
+      
+    }
   };
 
   return (
@@ -21,6 +52,7 @@ export function Login() {
           <span>Password</span>
           <input id="password-input" type="password" placeholder="password" />
           <button id="login-button" type="submit">Login</button>
+          <button id="create-account-button" type="submit">Create Account</button>
         </form>
       </div>
     </main>

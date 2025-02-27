@@ -33,3 +33,7 @@ span {
         justify-content: center;
         align-content: center;
 }
+
+#create-account-button {
+    margin-top: 8px;
+}
