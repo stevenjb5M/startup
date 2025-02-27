@@ -23,6 +23,15 @@
 
 #popup {
     display: none;
+    width: 50%;
+    border-radius: 25px;
+    display: grid;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+    position: absolute;
+    padding: 16px;
+    background-color: rgb(162, 162, 168);
 }
 
 #locations-list {
