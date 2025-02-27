@@ -19,7 +19,7 @@ export function Login() {
     };
 
     if (event.nativeEvent.submitter.id === 'login-button') {
-      const storedUser = JSON.parse(localStorage.getItem(email));
+      const storedUser = JSON.parse(localStorage.getItem('users/' + email));
       if (storedUser && storedUser.email === email && storedUser.password === password) {
         setCurrentUser(storedUser);
         navigate('/home');
@@ -29,12 +29,12 @@ export function Login() {
     } else if (event.nativeEvent.submitter.id === 'create-account-button') {
       if ((email !== "") && (password !== ""))
       {
-        const existingUser = JSON.parse(localStorage.getItem(email));
+        const existingUser = JSON.parse(localStorage.getItem('users/' + email));
         if (existingUser) {
           alert('User with this email already exists');
         }
         else {
-          localStorage.setItem(email, JSON.stringify(user));
+          localStorage.setItem('users/' + email, JSON.stringify(user));
           alert('Account created successfully');
           setCurrentUser(user);
           navigate('/home');

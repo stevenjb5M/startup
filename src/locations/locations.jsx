@@ -7,6 +7,7 @@ import { UserContext } from '../context/UserContext';
 export function Locations() {
   const [locations, setLocations] = useState([]);
   const { currentUser } = useContext(UserContext);
+  const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
 
@@ -15,7 +16,8 @@ export function Locations() {
       navigate('/');
     }
 
-    const storedLocations = JSON.parse(localStorage.getItem(currentUser.email + '/locations')) || [];
+    const userObject = JSON.parse(localStorage.getItem(currentUser.email)) || [];
+    const storedLocations = userObject.locations || [];
     setLocations(storedLocations);
   }, [currentUser, navigate]);
 
@@ -57,7 +59,11 @@ export function Locations() {
     if (locationName) {
       const updatedLocations = [...locations, locationName];
       setLocations(updatedLocations);
-      localStorage.setItem(currentUser.email + '/locations', JSON.stringify(updatedLocations));
+
+      const updatedUser = { ...currentUser, locations: updatedLocations };
+      setCurrentUser(updatedUser);
+      localStorage.setItem(currentUser.email, JSON.stringify(updatedUser));
+
       document.getElementById('location-name').value = '';
       closePopup();
     }
@@ -66,7 +72,10 @@ export function Locations() {
   function deleteLocation(locationIndex) {
     const updatedLocations = locations.filter((_, index) => index !== locationIndex);
     setLocations(updatedLocations);
-    localStorage.setItem(currentUser.email + '/locations', JSON.stringify(updatedLocations));
+
+    const updatedUser = { ...currentUser, locations: updatedLocations };
+    setCurrentUser(updatedUser);
+    localStorage.setItem(currentUser.email, JSON.stringify(updatedUser));
   }
 
   function openPopup() {
