@@ -32,7 +32,11 @@ export function Home() {
 
   const handleSelectionChange = (event) => {
     const selectedValue = event.target.value;
-    const location = locations.find(loc => loc.value === selectedValue);
+    console.log(selectedValue);
+    const locationIndex = locations.indexOf(selectedValue);
+    const location = locations[locationIndex];
+    console.log(locations);
+    console.log(location);
     setSelectedLocation(location);
   };
 
@@ -51,7 +55,7 @@ export function Home() {
     
         {selectedLocation && (
           <div id="cashback-div">
-            <h2>{selectedLocation.label}</h2>
+            <h2>{selectedLocation}</h2>
             <p>Use your Wells Fargo card!</p>
             <p>You will earn back</p>
           </div>
