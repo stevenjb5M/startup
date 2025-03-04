@@ -69,3 +69,4 @@ For this deliverable I properly styled the application into its final appearance
 -React useEffect is used for component lifecycle events
 -React useState is used for reactive parts of each component
 -You can use {object} inside the html to show objects
+-Overall, I really like the idea of React. It is much easier when everything is on the same page. It makes it easier to understand. 

@@ -54,3 +54,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Bundled using Vite** - I did this
 - [x] **Components** - Moved them all over! 
 - [x] **Router** - Routing between all pages
+
+## React Phase 2: Reactivity deliverable
+
+For this deliverable I used JavaScript and React so that the application completely works for a single user. I also added placeholders for future technology. My random dog fact api and also my leaderboard page. 
+
+- [x] **All functionality implemented or mocked out** - Everything is working! Cards and locations are stored on local storage.
+- [x] **Hooks** - Used `useState` and `useEffect` on most pages.
