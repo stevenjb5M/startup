@@ -1,19 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "../main.css";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
 export function Home() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  useEffect(() => {                                
-    const storedLocations = localStorage.getItem(currentUser.email + '/locations');
-    if (storedLocations) {
-      setLocations(JSON.parse(storedLocations));
+  useEffect(() => {
+    if (!currentUser || !currentUser.email) {
+      navigate('/');
+      return;
     }
-  }, []);
+
+    console.log("Current User:", currentUser);
+    const userObject = JSON.parse(localStorage.getItem("users/" + currentUser.email)) || {};
+    console.log("User Object from Local Storage:", userObject);
+
+    const storedLocations = userObject.locations || [];
+    console.log("Stored Locations:", storedLocations);
+
+    if (storedLocations.length > 0) {
+      setLocations(storedLocations);
+      console.log("Locations state set:", storedLocations);
+    } else {
+      console.log("No stored locations found for user:", currentUser.email);
+    }
+  }, [currentUser, navigate]);
 
   const handleSelectionChange = (event) => {
     const selectedValue = event.target.value;
@@ -27,8 +42,8 @@ export function Home() {
         <select id="dropdown" title="Location" name="location_selection" onChange={handleSelectionChange} defaultValue="">
           <option value="" disabled>Select Location (Database data)</option>
           {locations.map((location) => (
-            <option key={location.value} value={location.value}>
-              {location.label}
+            <option key={location} value={location}>
+              {location}
             </option>
           ))}
         </select>

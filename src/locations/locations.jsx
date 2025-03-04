@@ -16,7 +16,7 @@ export function Locations() {
       navigate('/');
     }
 
-    const userObject = JSON.parse(localStorage.getItem(currentUser.email)) || [];
+    const userObject = JSON.parse(localStorage.getItem("users/" + currentUser.email)) || [];
     const storedLocations = userObject.locations || [];
     setLocations(storedLocations);
   }, [currentUser, navigate]);
@@ -62,7 +62,7 @@ export function Locations() {
 
       const updatedUser = { ...currentUser, locations: updatedLocations };
       setCurrentUser(updatedUser);
-      localStorage.setItem(currentUser.email, JSON.stringify(updatedUser));
+      localStorage.setItem("users/" + currentUser.email, JSON.stringify(updatedUser));
 
       document.getElementById('location-name').value = '';
       closePopup();
@@ -75,7 +75,7 @@ export function Locations() {
 
     const updatedUser = { ...currentUser, locations: updatedLocations };
     setCurrentUser(updatedUser);
-    localStorage.setItem(currentUser.email, JSON.stringify(updatedUser));
+    localStorage.setItem("users/" + currentUser.email, JSON.stringify(updatedUser));
   }
 
   function openPopup() {
