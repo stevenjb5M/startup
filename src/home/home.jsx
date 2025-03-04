@@ -6,6 +6,9 @@ import { UserContext } from '../context/UserContext';
 export function Home() {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [bestCard, setBestCard] = useState(null);
+  const [bestCashBack, setBestCashBack] = useState(null);
   const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -28,6 +31,9 @@ export function Home() {
     } else {
       console.log("No stored locations found for user:", currentUser.email);
     }
+
+    const storedCards = userObject.cards || [];
+    setCards(storedCards);
   }, [currentUser, navigate]);
 
   const handleSelectionChange = (event) => {
@@ -38,6 +44,19 @@ export function Home() {
     console.log(locations);
     console.log(location);
     setSelectedLocation(location);
+
+    // Find the card with the highest cashback percentage for the selected location
+    let highestCashback = 0;
+    let bestCard = null;
+    cards.forEach(card => {
+      const cashback = card.cashBacks[selectedValue];
+      if (cashback && cashback > highestCashback) {
+        highestCashback = cashback;
+        bestCard = card.name;
+      }
+    });
+    setBestCard(bestCard);
+    setBestCashBack(highestCashback);
   };
 
   return (
@@ -56,8 +75,14 @@ export function Home() {
         {selectedLocation && (
           <div id="cashback-div">
             <h2>{selectedLocation}</h2>
-            <p>Use your Wells Fargo card!</p>
-            <p>You will earn back</p>
+            {bestCard ? (
+              <>
+                <p>Use your {bestCard} card!</p>
+                <p>You will earn {bestCashBack}% back</p>
+              </>
+            ) : (
+              <p>No card found</p>
+            )}
           </div>
         )}
     
