@@ -1,5 +1,4 @@
 #cards-div {
-    background-color: #ffe9fe;
     margin: 32px;
     border-radius: 10px;
 }
@@ -8,13 +7,13 @@
     margin-left: 16px;
 }
 
-.card {
+/* .card {
     height: 25px;
     border: black 1px solid;
     border-radius: 10px;
     margin: 16px;
     font-size: 21px;
-}
+} */
 
 #popup {
     display: none;
@@ -67,7 +66,7 @@
     opacity: .5;
 }
 
-#locations-list {
+#card-list {
     list-style-type: none;
     margin: 0;
     margin-block-start: 0;
@@ -75,7 +74,7 @@
     padding-inline-start: 0;
 }
 
-#location-name {
+#card-name {
     border-radius: 5px;
     border: none;
 }
@@ -91,10 +90,14 @@ button{
     margin: 8px;
 }
 
-.specific-location-div
+.specific-card-div
 {
     display: flex;
     justify-content: space-between;
 }
 
-
+.card-style {
+    margin: 16px;
+    color: white;
+    font-size: 21px;
+}
