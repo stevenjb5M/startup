@@ -1,12 +1,8 @@
-
-const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const express = require('express');
-const cors = require('cors'); // Import the cors middleware
+const cors = require('cors');
 const uuid = require('uuid');
 const app = express();
-
-const authCookieName = 'token';
 
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
@@ -14,7 +10,6 @@ let scores = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-
 
 // Root endpoint for testing
 app.get('/', (req, res) => {
@@ -30,9 +25,6 @@ app.use(cors({
 // JSON body parsing using built-in middleware
 app.use(express.json());
 
-// Use the cookie parser middleware for tracking authentication tokens
-app.use(cookieParser());
-
 // Serve up the front-end static content hosting
 app.use(express.static('public'));
 
@@ -46,11 +38,17 @@ apiRouter.post('/auth/create', async (req, res) => {
     res.status(409).send({ msg: 'Existing user' });
   } else {
     const user = await createUser(req.body.email, req.body.password);
-
-    setAuthCookie(res, user.token);
     res.send({ email: user.email });
   }
 });
+
+// Function to create a new user
+async function createUser(email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = { email, password: hashedPassword, locations: [] };
+  users.push(user);
+  return user;
+}
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
@@ -58,8 +56,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
-      setAuthCookie(res, user.token);
-      res.send({ email: user.email });
+      res.send({ email: user.email, token: user.token });
       return;
     }
   }
@@ -68,23 +65,38 @@ apiRouter.post('/auth/login', async (req, res) => {
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
+  const user = await findUser('email', req.body.email);
   if (user) {
     delete user.token;
-  }
-  res.clearCookie(authCookieName);
-  res.status(204).end();
-});
-
-// Middleware to verify that the user is authorized to call an endpoint
-const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    next();
+    res.status(204).end();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
-};
+});
+
+// GetLocations
+apiRouter.get('/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  res.send(user.locations);
+});
+
+// AddLocation
+apiRouter.post('/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  const location = req.body.location;
+  if (!user.locations.includes(location)) {
+    user.locations.push(location);
+  }
+  res.send(user.locations);
+});
+
+// RemoveLocation
+apiRouter.delete('/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  const location = req.body.location;
+  user.locations = user.locations.filter(loc => loc !== location);
+  res.send(user.locations);
+});
 
 // GetScores
 apiRouter.get('/scores', verifyAuth, (_req, res) => {
@@ -129,32 +141,21 @@ function updateScores(newScore) {
   return scores;
 }
 
-async function createUser(email, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = {
-    email: email,
-    password: passwordHash,
-    token: uuid.v4(),
-  };
-  users.push(user);
-
-  return user;
-}
-
+// Function to find a user by a specific field
 async function findUser(field, value) {
-  if (!value) return null;
-
-  return users.find((u) => u[field] === value);
+  return users.find(user => user[field] === value);
 }
 
-// setAuthCookie in the HTTP response
-function setAuthCookie(res, authToken) {
-  res.cookie(authCookieName, authToken, {
-    secure: true,
-    httpOnly: true,
-    sameSite: 'strict',
-  });
+// Middleware to verify authentication
+async function verifyAuth(req, res, next) {
+  const token = req.headers['authorization'];
+  const user = users.find(user => user.token === token);
+  if (user) {
+    req.user = user;
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
 }
 
 app.get('*', (_req, res) => {

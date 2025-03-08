@@ -14,12 +14,10 @@ export function Locations() {
   useEffect(() => {
     if (!currentUser.email) {
       navigate('/');
+    } else {
+      getLocations();
     }
-
-    const userObject = JSON.parse(localStorage.getItem("users/" + currentUser.email)) || [];
-    const storedLocations = userObject.locations || [];
-    setLocations(storedLocations);
-  }, [currentUser, navigate]);
+  }, []);
 
   return (
     <main>
@@ -27,9 +25,9 @@ export function Locations() {
         <h2 id="locations-title">Your Locations</h2>
         <ul id="locations-list">
           {locations.map((location, index) => (
-            <div className="specific-location-div">
+            <div className="specific-location-div" key={location + index}>
               <li key={index} className="location">{location}</li>
-              <button onClick={() => deleteLocation(index)}>Delete</button>
+              <button onClick={() => deleteLocation(location)}>Delete</button>
             </div>
             
           ))}
@@ -54,28 +52,105 @@ export function Locations() {
     </main>
   );
 
-  function addLocation() {
-    const locationName = document.getElementById('location-name').value;
-    if (locationName) {
-      const updatedLocations = [...locations, locationName];
-      setLocations(updatedLocations);
+  async function getLocations() {
+    try {
+      const response = await fetch('http://localhost:4000/api/locations', {
+        method: "GET", 
+        headers: {
+          'Authorization': currentUser.token
+        },
+      });
 
-      const updatedUser = { ...currentUser, locations: updatedLocations };
-      setCurrentUser(updatedUser);
-      localStorage.setItem("users/" + currentUser.email, JSON.stringify(updatedUser));
+      debugger;
+      if (response.ok) {
+        console.log("Got Locations");
+        let data;
+        try {
+          data = await response.json();
+        } catch (error) {
+          console.error("Failed to parse locations data", error);
+          data = [];
+        }
 
-      document.getElementById('location-name').value = '';
-      closePopup();
+        if (data)
+        {
+          setLocations(data);
+  
+          const updatedUser = { ...currentUser, locations: data };
+          setCurrentUser(updatedUser);  
+        }
+
+      }
+      else {
+        alert('Failed to get locations');
+      }
+    } catch (error) {
+      alert("An error occured while getting the locations");
     }
   }
 
-  function deleteLocation(locationIndex) {
-    const updatedLocations = locations.filter((_, index) => index !== locationIndex);
-    setLocations(updatedLocations);
+  async function addLocation() {
+    try {
+      const locationName = document.getElementById('location-name').value;
 
-    const updatedUser = { ...currentUser, locations: updatedLocations };
-    setCurrentUser(updatedUser);
-    localStorage.setItem("users/" + currentUser.email, JSON.stringify(updatedUser));
+      const response = await fetch('http://localhost:4000/api/locations', {
+        method: "POST", 
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({location: locationName})
+      });
+
+      if (response.ok) {
+        console.log("Added Location");
+
+        const updatedLocations = [...locations, locationName];
+        console.log("updated locations", updatedLocations);
+        debugger;
+        setLocations(updatedLocations);
+
+        const updatedUser = { ...currentUser, locations: updatedLocations };
+        setCurrentUser(updatedUser);
+
+        document.getElementById('location-name').value = '';
+        closePopup();
+      }
+      else {
+        alert('Failed to add location');
+      }
+    } catch (error) {
+      alert("An error occured while adding the location");
+    }
+  }
+
+  async function deleteLocation(locationName) {
+    try {
+      const response = await fetch('http://localhost:4000/api/locations', {
+        method: "POST", 
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({location: locationName})
+      });
+
+      if (response.ok) {
+        console.log("deleted Location");
+
+        const updatedLocations = locations.filter(location => location !== locationName);
+        setLocations(updatedLocations);
+
+        const updatedUser = { ...currentUser, locations: updatedLocations };
+        setCurrentUser(updatedUser);
+      }
+      else {
+        alert('Failed to delete location');
+      }
+    } catch (error) {
+      alert("An error occured while deleting the location");
+    }
+    
   }
 
   function openPopup() {

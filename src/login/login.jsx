@@ -19,12 +19,25 @@ export function Login() {
     };
 
     if (event.nativeEvent.submitter.id === 'login-button') {
-      const storedUser = JSON.parse(localStorage.getItem('users/' + email));
-      if (storedUser && storedUser.email === email && storedUser.password === password) {
-        setCurrentUser(storedUser);
-        navigate('/home');
-      } else {
-        alert('User does not exist or incorrect credentials');
+      try {
+        const response = await fetch('http://localhost:4000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentUser(data);
+          navigate('/home');
+        } else {
+          alert('Unauthorized');
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+        alert('An error occurred while logging in');
       }
     } else if (event.nativeEvent.submitter.id === 'create-account-button') {
       if (email !== "" && password !== "") {
