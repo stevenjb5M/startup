@@ -9,7 +9,7 @@ export function Login() {
   const { setCurrentUser } = useContext(UserContext);
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.elements['email-input'].value;
     const password = event.target.elements['password-input'].value;
@@ -27,17 +27,28 @@ export function Login() {
         alert('User does not exist or incorrect credentials');
       }
     } else if (event.nativeEvent.submitter.id === 'create-account-button') {
-      if ((email !== "") && (password !== ""))
-      {
-        const existingUser = JSON.parse(localStorage.getItem('users/' + email));
-        if (existingUser) {
-          alert('User with this email already exists');
-        }
-        else {
-          localStorage.setItem('users/' + email, JSON.stringify(user));
-          alert('Account created successfully');
-          setCurrentUser(user);
-          navigate('/home');
+      if (email !== "" && password !== "") {
+        try {
+          const response = await fetch('http://localhost:4000/api/auth/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+          });
+
+          if (response.status === 409) {
+            alert('User with this email already exists');
+          } else if (response.ok) {
+            const data = await response.json();
+            setCurrentUser(data);
+            navigate('/home');
+          } else {
+            alert('Failed to create account');
+          }
+        } catch (error) {
+          console.error('Error creating account:', error);
+          alert('An error occurred while creating the account');
         }
 
       } else {
