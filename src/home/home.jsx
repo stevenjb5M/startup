@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "../main.css";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
 export function Home() {
@@ -19,22 +19,51 @@ export function Home() {
     }
 
     console.log("Current User:", currentUser);
-    const userObject = JSON.parse(localStorage.getItem("users/" + currentUser.email)) || {};
-    console.log("User Object from Local Storage:", userObject);
-
-    const storedLocations = userObject.locations || [];
-    console.log("Stored Locations:", storedLocations);
-
-    if (storedLocations.length > 0) {
-      setLocations(storedLocations);
-      console.log("Locations state set:", storedLocations);
-    } else {
-      console.log("No stored locations found for user:", currentUser.email);
-    }
-
-    const storedCards = userObject.cards || [];
-    setCards(storedCards);
+    getLocations();
+    getCards();
   }, [currentUser, navigate]);
+
+  const getLocations = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/locations', {
+        method: "GET",
+        headers: {
+          'Authorization': currentUser.token
+        },
+      });
+
+      if (response.ok) {
+        console.log("Got Locations");
+        const data = await response.json();
+        setLocations(data);
+      } else {
+        console.error('Failed to get locations', response.statusText);
+      }
+    } catch (error) {
+      console.error("An error occurred while getting the locations", error);
+    }
+  };
+
+  const getCards = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/cards', {
+        method: "GET",
+        headers: {
+          'Authorization': currentUser.token
+        },
+      });
+
+      if (response.ok) {
+        console.log("Got Cards");
+        const data = await response.json();
+        setCards(data);
+      } else {
+        console.error('Failed to get cards', response.statusText);
+      }
+    } catch (error) {
+      console.error("An error occurred while getting the cards", error);
+    }
+  };
 
   const handleSelectionChange = (event) => {
     const selectedValue = event.target.value;
@@ -49,11 +78,11 @@ export function Home() {
     let highestCashback = 0;
     let bestCard = null;
     cards.forEach(card => {
-      const cashback = card.cashBacks[selectedValue];
-      if (cashback && cashback > highestCashback) {
-        highestCashback = cashback;
-        bestCard = card.name;
-      }
+      const locationData = card.locations.find(loc => loc.location === selectedValue);
+    if (locationData && locationData.cashback > highestCashback) {
+      highestCashback = locationData.cashback;
+      bestCard = card.cardId;
+    }
     });
     setBestCard(bestCard);
     setBestCashBack(highestCashback);
@@ -91,41 +120,4 @@ export function Home() {
       </div> 
     </main>
   );
-}
-
-async function getLocations() {
-  try {
-    const response = await fetch('http://localhost:4000/api/locations', {
-      method: "GET", 
-      headers: {
-        'Authorization': currentUser.token
-      },
-    });
-
-    debugger;
-    if (response.ok) {
-      console.log("Got Locations");
-      let data;
-      try {
-        data = await response.json();
-      } catch (error) {
-        console.error("Failed to parse locations data", error);
-        data = [];
-      }
-
-      if (data)
-      {
-        setLocations(data);
-
-        const updatedUser = { ...currentUser, locations: data };
-        setCurrentUser(updatedUser);  
-      }
-
-    }
-    else {
-      alert('Failed to get locations');
-    }
-  } catch (error) {
-    alert("An error occured while getting the locations");
-  }
 }

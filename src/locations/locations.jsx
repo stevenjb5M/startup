@@ -61,7 +61,6 @@ export function Locations() {
         },
       });
 
-      debugger;
       if (response.ok) {
         console.log("Got Locations");
         let data;
@@ -107,7 +106,6 @@ export function Locations() {
 
         const updatedLocations = [...locations, locationName];
         console.log("updated locations", updatedLocations);
-        debugger;
         setLocations(updatedLocations);
 
         const updatedUser = { ...currentUser, locations: updatedLocations };

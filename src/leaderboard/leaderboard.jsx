@@ -10,6 +10,7 @@ function getRandomStore() {
 
 export function Leaderboard() {
   const [randomStore, setRandomStore] = useState(getRandomStore());
+  const [quote, setQuote] = useState('Loading...');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -17,6 +18,24 @@ export function Leaderboard() {
     }, 5000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    async function fetchQuote() {
+      try {
+        const response = await fetch('https://api.kanye.rest/');
+        if (response.ok) {
+          const data = await response.json();
+          setQuote(data.quote);
+        } else {
+          setQuote('Failed to load quote');
+        }
+      } catch (error) {
+        setQuote('An error occurred while fetching the quote');
+      }
+    }
+
+    fetchQuote();
   }, []);
 
   return (
@@ -27,8 +46,8 @@ export function Leaderboard() {
           <li className="card">#1 {randomStore}</li>
         </ul>
 
-        <h2 id="dog-title">Random Dog Fact(Third party service)</h2>
-        <p id="dog-p">Dogs like to eat dog food</p>
+        <h2 id="quote-title">Random Kanye Quote</h2>
+        <p id="quote-p">{quote}</p>
       </div>
     </main>
   );

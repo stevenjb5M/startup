@@ -7,32 +7,26 @@
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="main.css" />
     <link rel="stylesheet" href="leaderboard.css" />
-
   </head>
   <body>
     <header>
       <h1 style="text-align: center;">Where everyone is earning cash back!</h1>
-
       <hr />
     </header>
 
     <main>
-    
-
-    <main>
-      
       <div id="leaderboard-div">
         <h2 id="leaderboard-title">Leaderboard(Web Sockets)</h2>
         <ul id="leader-list">
           <li class="card">#1 Ally</li>
           <li class="card">#2 Capitol One</li>
           <li class="card">#3 Wells Fargo</li>
-         </ul>
+        </ul>
 
-         <h2 id="dog-title">Random Dog Fact(Third party service)</h2>
-         <p id="dog-p">Dogs eat food</p>
+        <h2 id="quote-title">Random Kanye Quote</h2>
+        <p id="quote-p">Loading...</p>
       </div>
-  
+
       <nav id="leaderboard-button-div">
         <a class="icon-link" href="main.html">
           <img class="icon-button" src="house-solid.svg" alt="Description of image" />
@@ -40,23 +34,38 @@
         <a class="icon-link" href="locations.html">
           <img class="icon-button" src="store-solid.svg" alt="Description of image" />
         </a>
-  
-      <a class="icon-link" href="cards.html">
+        <a class="icon-link" href="cards.html">
           <img class="icon-button" src="credit-card-solid.svg" alt="Description of image" />
-      </a>
+        </a>
         <a class="icon-link" href="leaderboard.html">
           <img class="icon-button" src="chart-simple-solid.svg" alt="Description of image" />
         </a>
       </nav>
-  
-  
-      </main>
-  
-      <footer>
-        <div id="footer-info">
-          <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
-        </div>
-        
-      </footer>
+    </main>
+
+    <footer>
+      <div id="footer-info">
+        <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
+      </div>
+    </footer>
+
+    <script>
+      async function fetchQuote() {
+        try {
+          const response = await fetch('https://api.kanye.rest/');
+          if (response.ok) {
+            const data = await response.json();
+            document.getElementById('quote-p').innerText = data.quote;
+          } else {
+            document.getElementById('quote-p').innerText = 'Failed to load quote';
+          }
+        } catch (error) {
+          document.getElementById('quote-p').innerText = 'An error occurred while fetching the quote';
+        }
+      }
+
+      // Fetch the quote when the page loads
+      window.onload = fetchQuote;
+    </script>
   </body>
 </html>
