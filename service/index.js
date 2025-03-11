@@ -98,6 +98,31 @@ apiRouter.delete('/locations', verifyAuth, (req, res) => {
   res.send(user.locations);
 });
 
+// GetCard
+apiRouter.get('/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  res.send(user.locations);
+});
+
+// AddCard
+apiRouter.post('/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  const location = req.body.location;
+  if (!user.locations.includes(location)) {
+    user.locations.push(location);
+  }
+  res.send(user.locations);
+});
+
+// RemoveCard
+apiRouter.delete('/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  const location = req.body.location;
+  user.locations = user.locations.filter(loc => loc !== location);
+  res.send(user.locations);
+});
+
+
 // GetScores
 apiRouter.get('/scores', verifyAuth, (_req, res) => {
   res.send(scores);
