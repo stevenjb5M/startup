@@ -92,3 +92,40 @@ export function Home() {
     </main>
   );
 }
+
+async function getLocations() {
+  try {
+    const response = await fetch('http://localhost:4000/api/locations', {
+      method: "GET", 
+      headers: {
+        'Authorization': currentUser.token
+      },
+    });
+
+    debugger;
+    if (response.ok) {
+      console.log("Got Locations");
+      let data;
+      try {
+        data = await response.json();
+      } catch (error) {
+        console.error("Failed to parse locations data", error);
+        data = [];
+      }
+
+      if (data)
+      {
+        setLocations(data);
+
+        const updatedUser = { ...currentUser, locations: data };
+        setCurrentUser(updatedUser);  
+      }
+
+    }
+    else {
+      alert('Failed to get locations');
+    }
+  } catch (error) {
+    alert("An error occured while getting the locations");
+  }
+}

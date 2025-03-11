@@ -7,64 +7,141 @@ import { UserContext } from '../context/UserContext';
 export function Cards() {
   const [cards, setCards] = useState([]);
   const [cardName, setCardName] = useState('');
-  const [cashBacks, setCashBacks] = useState({});
-  const [locations, setLocations] = useState([]);
+  const [locationName, setLocationName] = useState('');
+  const [cashBack, setCashBack] = useState('');
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!currentUser.email) {
       navigate('/');
+    } else {
+      getCards();
     }
-
-    const userObject = JSON.parse(localStorage.getItem("users/" + currentUser.email)) || {};
-    const storedCards = userObject.cards || [];
-    setCards(storedCards);
-
-    const storedLocations = userObject.locations || [];
-    setLocations(storedLocations);
   }, [currentUser, navigate]);
+
+  const getCards = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/cards', {
+        method: 'GET',
+        headers: {
+          'Authorization': currentUser.token
+        }
+      });
+
+      if (response.ok) {
+        const cards = await response.json();
+        setCards(cards);
+      } else {
+        console.error('Failed to get cards', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while getting cards', error);
+    }
+  };
 
   const handleCardNameChange = (event) => {
     setCardName(event.target.value);
   };
 
-  const handleCashBackChange = (location, event) => {
-    const value = event.target.value;
-    setCashBacks((prevCashBacks) => ({
-      ...prevCashBacks,
-      [location]: value,
-    }));
+  const handleLocationNameChange = (event) => {
+    setLocationName(event.target.value);
   };
 
-  const addCard = () => {
-    const card = {
-      name: cardName,
-      cashBacks,
-    };
+  const handleCashBackChange = (event) => {
+    setCashBack(event.target.value);
+  };
 
-    if (card) {
-      const updatedCards = [...cards, card];
-      setCards(updatedCards);
+  const addCard = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/cards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({ cardId: cardName })
+      });
 
-      const updatedUser = { ...currentUser, cards: updatedCards };
-      setCurrentUser(updatedUser);
-      localStorage.setItem("users/" + currentUser.email, JSON.stringify(updatedUser));
-
-      setCardName('');
-      setCashBacks({});
+      if (response.ok) {
+        const cards = await response.json();
+        setCards(cards);
+        setCardName('');
+        closePopup();
+      } else {
+        console.error('Failed to add card', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while adding the card', error);
     }
-    console.log('Card added:', card);
-    closePopup();
   };
 
-  const deleteCard = (cardIndex) => {
-    const updatedCards = cards.filter((_, index) => index !== cardIndex);
-    setCards(updatedCards);
+  const deleteCard = async (cardId) => {
+    try {
+      const response = await fetch('http://localhost:4000/api/cards', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({ cardId })
+      });
 
-    const updatedUser = { ...currentUser, cards: updatedCards };
-    setCurrentUser(updatedUser);
-    localStorage.setItem("users/" + currentUser.email, JSON.stringify(updatedUser));
+      if (response.ok) {
+        const cards = await response.json();
+        setCards(cards);
+      } else {
+        console.error('Failed to delete card', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while deleting the card', error);
+    }
+  };
+
+  const addLocationToCard = async (cardId) => {
+    try {
+      const response = await fetch(`http://localhost:4000/api/cards/${cardId}/locations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({ location: locationName, cashback: cashBack })
+      });
+
+      if (response.ok) {
+        const cards = await response.json();
+        setCards(cards);
+        setLocationName('');
+        setCashBack('');
+      } else {
+        console.error('Failed to add location to card', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while adding the location to the card', error);
+    }
+  };
+
+  const removeLocationFromCard = async (cardId, location) => {
+    try {
+      const response = await fetch(`http://localhost:4000/api/cards/${cardId}/locations`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({ location })
+      });
+
+      if (response.ok) {
+        const cards = await response.json();
+        setCards(cards);
+      } else {
+        console.error('Failed to remove location from card', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while removing the location from the card', error);
+    }
   };
 
   const openPopup = () => {
@@ -85,20 +162,36 @@ export function Cards() {
           {cards.map((card, index) => (
             <div key={index} className="specific-card-div">
               <li className="card-style">
-                <h3>{card.name}</h3>
+                <h3>{card.cardId}</h3>
                 <ul>
-                  {card.cashBacks && Object.entries(card.cashBacks).map(([location, percentage]) => (
-                    <li key={location}>{location}: {percentage}%</li>
+                  {card.locations && card.locations.map(loc => (
+                    <li key={loc.location}>
+                      {loc.location}: {loc.cashback}%
+                      <button onClick={() => removeLocationFromCard(card.cardId, loc.location)}>Remove Location</button>
+                    </li>
                   ))}
                 </ul>
+                <input
+                  type="text"
+                  placeholder="Location name"
+                  value={locationName}
+                  onChange={handleLocationNameChange}
+                />
+                <input
+                  type="text"
+                  placeholder="Cash back percentage"
+                  value={cashBack}
+                  onChange={handleCashBackChange}
+                />
+                <button onClick={() => addLocationToCard(card.cardId)}>Add Location</button>
               </li>
-              <button onClick={() => deleteCard(index)} aria-label={`Delete card ${card.name}`}>Delete</button>
+              <button onClick={() => deleteCard(card.cardId)}>Delete</button>
             </div>
           ))}
         </ul>
 
         <div id="add-remove-buttons">
-          <a className="icon-link" href="#" onClick={openPopup} aria-label="Add new card">
+          <a className="icon-link" href="#" onClick={openPopup}>
             <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add new card" />
           </a>
         </div>
@@ -109,21 +202,6 @@ export function Cards() {
       <div id="popup" style={{ display: 'none' }}>
         <h3>Enter Card Name</h3>
         <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={handleCardNameChange} />
-        <br />
-        <h3>Choose Location</h3>
-        <ul id="locations-list">
-          {locations.map((location, index) => (
-            <div key={location} className="specific-location-div">
-              <li className="location">{location}</li>
-              <input
-                type="text"
-                placeholder="Cash back percentage"
-                value={cashBacks[location] || ''}
-                onChange={(event) => handleCashBackChange(location, event)}
-              />
-            </div>
-          ))}
-        </ul>
         <br />
         <button type="button" onClick={addCard}>Add Card</button>
         <button type="button" onClick={closePopup}>Close</button>

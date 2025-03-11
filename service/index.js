@@ -45,7 +45,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 // Function to create a new user
 async function createUser(email, password) {
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { email, password: hashedPassword, locations: [] };
+  const user = { email, password: hashedPassword, locations: [], cards: [] };
   users.push(user);
   return user;
 }
@@ -98,28 +98,58 @@ apiRouter.delete('/locations', verifyAuth, (req, res) => {
   res.send(user.locations);
 });
 
-// GetCard
-apiRouter.get('/locations', verifyAuth, (req, res) => {
+// GetCards
+apiRouter.get('/cards', verifyAuth, (req, res) => {
   const user = req.user;
-  res.send(user.locations);
+  res.send(user.cards);
 });
 
 // AddCard
-apiRouter.post('/locations', verifyAuth, (req, res) => {
-  const user = req.user;
-  const location = req.body.location;
-  if (!user.locations.includes(location)) {
-    user.locations.push(location);
+apiRouter.post('/cards', verifyAuth, (req, res) => {
+  try {
+    const user = req.user;
+    const cardId = req.body.cardId;
+    console.log(user);
+    if (!user.cards.find(card => card.cardId === cardId)) {
+      user.cards.push({ cardId, locations: [] });
+    }
+    res.send(user.cards);
+  } catch (error) {
+    console.error('Error adding card:', error);
+    res.status(500).send({ msg: 'Internal Server Error' });
   }
-  res.send(user.locations);
 });
 
 // RemoveCard
-apiRouter.delete('/locations', verifyAuth, (req, res) => {
+apiRouter.delete('/cards', verifyAuth, (req, res) => {
   const user = req.user;
+  const cardId = req.body.cardId;
+  user.cards = user.cards.filter(card => card.cardId !== cardId);
+  res.send(user.cards);
+});
+
+// AddLocationToCard
+apiRouter.post('/cards/:cardId/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  const cardId = req.params.cardId;
+  const { location, cashback } = req.body;
+  const card = user.cards.find(card => card.cardId === cardId);
+  if (card && !card.locations.find(loc => loc.location === location)) {
+    card.locations.push({ location, cashback });
+  }
+  res.send(user.cards);
+});
+
+// RemoveLocationFromCard
+apiRouter.delete('/cards/:cardId/locations', verifyAuth, (req, res) => {
+  const user = req.user;
+  const cardId = req.params.cardId;
   const location = req.body.location;
-  user.locations = user.locations.filter(loc => loc !== location);
-  res.send(user.locations);
+  const card = user.cards.find(card => card.cardId === cardId);
+  if (card) {
+    card.locations = card.locations.filter(loc => loc.location !== location);
+  }
+  res.send(user.cards);
 });
 
 
