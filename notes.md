@@ -70,3 +70,9 @@ For this deliverable I properly styled the application into its final appearance
 -React useState is used for reactive parts of each component
 -You can use {object} inside the html to show objects
 -Overall, I really like the idea of React. It is much easier when everything is on the same page. It makes it easier to understand. 
+
+## Service
+-This was my favorite unit by far. I have always had an interest in backend
+-Use Fetch to call apis
+-Api urls can be the same as long us you use different put/get/push etc
+-Async and await can be used to not slow down the app while you make an api call

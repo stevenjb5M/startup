@@ -28,10 +28,10 @@ export function Leaderboard() {
           const data = await response.json();
           setQuote(data.quote);
         } else {
-          setQuote('Failed to load quote');
+          setQuote('quote failed to load');
         }
       } catch (error) {
-        setQuote('An error occurred while fetching the quote');
+        setQuote('An error occurred while getting the quote');
       }
     }
 

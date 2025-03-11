@@ -6,7 +6,6 @@ const app = express();
 
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
-let scores = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -152,18 +151,6 @@ apiRouter.delete('/cards/:cardId/locations', verifyAuth, (req, res) => {
   res.send(user.cards);
 });
 
-
-// GetScores
-apiRouter.get('/scores', verifyAuth, (_req, res) => {
-  res.send(scores);
-});
-
-// SubmitScore
-apiRouter.post('/score', verifyAuth, (req, res) => {
-  scores = updateScores(req.body);
-  res.send(scores);
-});
-
 // Default error handler
 app.use(function (err, req, res, next) {
   res.status(500).send({ type: err.name, message: err.message });
@@ -173,33 +160,6 @@ app.use(function (err, req, res, next) {
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
-
-// updateScores considers a new score for inclusion in the high scores.
-function updateScores(newScore) {
-  let found = false;
-  for (const [i, prevScore] of scores.entries()) {
-    if (newScore.score > prevScore.score) {
-      scores.splice(i, 0, newScore);
-      found = true;
-      break;
-    }
-  }
-
-  if (!found) {
-    scores.push(newScore);
-  }
-
-  if (scores.length > 10) {
-    scores.length = 10;
-  }
-
-  return scores;
-}
-
-// Function to find a user by a specific field
-async function findUser(field, value) {
-  return users.find(user => user[field] === value);
-}
 
 // Middleware to verify authentication
 async function verifyAuth(req, res, next) {
