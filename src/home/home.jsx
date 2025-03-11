@@ -25,7 +25,7 @@ export function Home() {
 
   const getLocations = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/locations', {
+      const response = await fetch('api/locations', {
         method: "GET",
         headers: {
           'Authorization': currentUser.token
@@ -46,7 +46,7 @@ export function Home() {
 
   const getCards = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/cards', {
+      const response = await fetch('api/cards', {
         method: "GET",
         headers: {
           'Authorization': currentUser.token

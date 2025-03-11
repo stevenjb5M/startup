@@ -10,15 +10,10 @@ let users = [];
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
-// Root endpoint for testing
-app.get('/', (req, res) => {
-  res.send('Server is running');
-});
-
-// Use the cors middleware to allow cross-origin requests
+// Enable CORS for production
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from this origin
-  credentials: true // Allow cookies to be sent with requests
+  origin: 'https://startup.cardcash.click/', // Replace with your production domain
+  credentials: true
 }));
 
 // JSON body parsing using built-in middleware
@@ -33,11 +28,21 @@ app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  if (await findUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'Existing user' });
-  } else {
+  try {
+    console.log('Received request to create user:', req.body);
+
+    const existingUser = await findUser('email', req.body.email);
+    if (existingUser) {
+      console.log('User with this email already exists:', req.body.email);
+      return res.status(409).json({ msg: 'Existing user' });
+    }
+
     const user = await createUser(req.body.email, req.body.password);
-    res.send({ email: user.email });
+    user.token = uuid.v4();
+    res.json({ email: user.email, token: user.token });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ msg: 'Internal Server Error' });
   }
 });
 
@@ -51,6 +56,8 @@ async function createUser(email, password) {
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
+  console.log('Received request to create user:', req.body);
+
   const user = await findUser('email', req.body.email);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
@@ -119,6 +126,11 @@ apiRouter.post('/cards', verifyAuth, (req, res) => {
   }
 });
 
+// Function to find a user by a specific field
+async function findUser(field, value) {
+  return users.find(user => user[field] === value);
+}
+
 // RemoveCard
 apiRouter.delete('/cards', verifyAuth, (req, res) => {
   const user = req.user;
@@ -172,10 +184,6 @@ async function verifyAuth(req, res, next) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-
-app.get('*', (_req, res) => {
-  res.send({ msg: 'Simon service' });
-});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

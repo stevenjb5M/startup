@@ -22,7 +22,7 @@ export function Cards() {
 
   const getCards = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/cards', {
+      const response = await fetch('/api/cards', {
         method: 'GET',
         headers: {
           'Authorization': currentUser.token
@@ -54,7 +54,7 @@ export function Cards() {
 
   const addCard = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/cards', {
+      const response = await fetch('/api/cards', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export function Cards() {
 
   const deleteCard = async (cardId) => {
     try {
-      const response = await fetch('http://localhost:4000/api/cards', {
+      const response = await fetch('/api/cards', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export function Cards() {
 
   const addLocationToCard = async (cardId) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/cards/${cardId}/locations`, {
+      const response = await fetch(`/api/cards/${cardId}/locations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export function Cards() {
 
   const removeLocationFromCard = async (cardId, location) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/cards/${cardId}/locations`, {
+      const response = await fetch(`/api/cards/${cardId}/locations`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

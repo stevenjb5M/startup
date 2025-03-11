@@ -54,7 +54,7 @@ export function Locations() {
 
   async function getLocations() {
     try {
-      const response = await fetch('http://localhost:4000/api/locations', {
+      const response = await fetch('/api/locations', {
         method: "GET", 
         headers: {
           'Authorization': currentUser.token
@@ -92,7 +92,7 @@ export function Locations() {
     try {
       const locationName = document.getElementById('location-name').value;
 
-      const response = await fetch('http://localhost:4000/api/locations', {
+      const response = await fetch('/api/locations', {
         method: "POST", 
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export function Locations() {
 
   async function deleteLocation(locationName) {
     try {
-      const response = await fetch('http://localhost:4000/api/locations', {
+      const response = await fetch('/api/locations', {
         method: "POST", 
         headers: {
           'Content-Type': 'application/json',
