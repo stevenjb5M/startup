@@ -92,7 +92,7 @@ export function Home() {
     <main>
       <div id="main-div">
         <select id="dropdown" title="Location" name="location_selection" onChange={handleSelectionChange} defaultValue="">
-          <option value="" disabled>Select Location (Database data)</option>
+          <option value="" disabled>Select Location</option>
           {locations.map((location) => (
             <option key={location} value={location}>
               {location}

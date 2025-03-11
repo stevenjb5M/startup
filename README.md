@@ -61,3 +61,14 @@ For this deliverable I used JavaScript and React so that the application complet
 
 - [x] **All functionality implemented or mocked out** - Everything is working! Cards and locations are stored on local storage.
 - [x] **Hooks** - Used `useState` and `useEffect` on most pages.
+
+## Service deliverable
+
+For this deliverable I added backend endpoints that store cards, locations, and cashback amounts!
+
+- [x] **Node.js/Express HTTP service** - done!
+- [x] **Static middleware for frontend** - done!
+- [x] **Calls to third party endpoints** - Calls kanye west quotes
+- [x] **Backend service endpoints** - Login, cards, locations endpoints
+- [x] **Frontend calls service endpoints** - Fetch used to call these
+- [x] **Supports registration, login, logout, and restricted endpoint**
