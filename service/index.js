@@ -1,30 +1,9 @@
-const {MongoClient} = require('mongodb');
-const config = require('./dbConfig.json');
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const cors = require('cors');
+const DB = require('./database.js');
 const uuid = require('uuid');
 const app = express();
-
-const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
-
-// Connect to the database cluster
-const client = new MongoClient(url);
-const db = client.db('rental');
-const collection = db.collection('house');
-
-async function main() {
-  console.log("1");
-  try {
-    //test connection
-    console.log("DB trying to connect");
-    await db.command({ ping: 1});
-    console.log("DB connected");
-  } catch {
-    console.log("Failed");
-    process.exit(1);``
-  }
-}
 
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
@@ -72,7 +51,9 @@ apiRouter.post('/auth/create', async (req, res) => {
 async function createUser(email, password) {
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = { email, password: hashedPassword, locations: [], cards: [] };
-  users.push(user);
+  
+  DB.addUser(user);
+
   return user;
 }
 
@@ -103,19 +84,31 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 });
 
 // GetLocations
-apiRouter.get('/locations', verifyAuth, (req, res) => {
-  const user = req.user;
+apiRouter.get('/locations', verifyAuth, async (req, res) => {
+  console.log('Received request to get locations:', req.body);
+
+  const user = await DB.getUser(req.user.email);
   res.send(user.locations);
 });
 
 // AddLocation
-apiRouter.post('/locations', verifyAuth, (req, res) => {
+apiRouter.post('/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const location = req.body.location;
-  if (!user.locations.includes(location)) {
-    user.locations.push(location);
+
+  try {
+    const result = await DB.addLocation(user,location);
+
+    if (result.modifiedCount > 0) {
+      res.send(user.locations);
+    } else {
+      res.status(400).send({ msg: 'Failed to add location' });
+    }
+  } catch {
+    console.error('Error adding location:', error);
+    res.status(500).send({ msg: 'Internal Server Error' });
   }
-  res.send(user.locations);
+  
 });
 
 // RemoveLocation
@@ -150,7 +143,13 @@ apiRouter.post('/cards', verifyAuth, (req, res) => {
 
 // Function to find a user by a specific field
 async function findUser(field, value) {
-  return users.find(user => user[field] === value);
+  if (!value) return null;
+
+  if (field == 'token') {
+    return DB.getUserByToken(value);
+  }
+
+  return DB.getUser(value);
 }
 
 // RemoveCard
@@ -158,6 +157,7 @@ apiRouter.delete('/cards', verifyAuth, (req, res) => {
   const user = req.user;
   const cardId = req.body.cardId;
   user.cards = user.cards.filter(card => card.cardId !== cardId);
+  DB.updateUser(user);
   res.send(user.cards);
 });
 
@@ -210,5 +210,3 @@ async function verifyAuth(req, res, next) {
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
-
-main();
