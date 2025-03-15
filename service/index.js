@@ -1,8 +1,30 @@
+const {MongoClient} = require('mongodb');
+const config = require('./dbConfig.json');
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const cors = require('cors');
 const uuid = require('uuid');
 const app = express();
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+
+// Connect to the database cluster
+const client = new MongoClient(url);
+const db = client.db('rental');
+const collection = db.collection('house');
+
+async function main() {
+  console.log("1");
+  try {
+    //test connection
+    console.log("DB trying to connect");
+    await db.command({ ping: 1});
+    console.log("DB connected");
+  } catch {
+    console.log("Failed");
+    process.exit(1);``
+  }
+}
 
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
@@ -188,3 +210,5 @@ async function verifyAuth(req, res, next) {
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+main();
