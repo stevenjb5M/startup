@@ -39,7 +39,6 @@ apiRouter.post('/auth/create', async (req, res) => {
     }
 
     const user = await createUser(req.body.email, req.body.password);
-    user.token = uuid.v4();
     res.json({ email: user.email, token: user.token });
   } catch (error) {
     console.error('Error creating user:', error);
@@ -50,7 +49,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 // Function to create a new user
 async function createUser(email, password) {
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { email, password: hashedPassword, locations: [], cards: [] };
+  const user = { email, password: hashedPassword, locations: [], cards: [], token: uuid.v4() };
   
   DB.addUser(user);
 
@@ -59,12 +58,13 @@ async function createUser(email, password) {
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  console.log('Received request to create user:', req.body);
+  console.log('Received request to login:', req.body);
 
   const user = await findUser('email', req.body.email);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
+      await DB.updateUser(user);
       res.send({ email: user.email, token: user.token });
       return;
     }
@@ -95,27 +95,15 @@ apiRouter.get('/locations', verifyAuth, async (req, res) => {
 apiRouter.post('/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const location = req.body.location;
-
-  try {
-    const result = await DB.addLocation(user,location);
-
-    if (result.modifiedCount > 0) {
-      res.send(user.locations);
-    } else {
-      res.status(400).send({ msg: 'Failed to add location' });
-    }
-  } catch {
-    console.error('Error adding location:', error);
-    res.status(500).send({ msg: 'Internal Server Error' });
-  }
-  
+  DB.addLocation(user,location);  
+  res.send(user.locations);
 });
 
 // RemoveLocation
 apiRouter.delete('/locations', verifyAuth, (req, res) => {
   const user = req.user;
   const location = req.body.location;
-  user.locations = user.locations.filter(loc => loc !== location);
+  DB.removeLocation(user,location);  
   res.send(user.locations);
 });
 
@@ -127,18 +115,11 @@ apiRouter.get('/cards', verifyAuth, (req, res) => {
 
 // AddCard
 apiRouter.post('/cards', verifyAuth, (req, res) => {
-  try {
-    const user = req.user;
-    const cardId = req.body.cardId;
-    console.log(user);
-    if (!user.cards.find(card => card.cardId === cardId)) {
-      user.cards.push({ cardId, locations: [] });
-    }
-    res.send(user.cards);
-  } catch (error) {
-    console.error('Error adding card:', error);
-    res.status(500).send({ msg: 'Internal Server Error' });
-  }
+  const user = req.user;
+  const cardId = req.body.cardId;
+  
+  DB.addCard(user,cardId);  
+  res.send(user.cards);
 });
 
 // Function to find a user by a specific field
@@ -156,8 +137,8 @@ async function findUser(field, value) {
 apiRouter.delete('/cards', verifyAuth, (req, res) => {
   const user = req.user;
   const cardId = req.body.cardId;
-  user.cards = user.cards.filter(card => card.cardId !== cardId);
-  DB.updateUser(user);
+  
+  DB.removeCard(user,cardId);  
   res.send(user.cards);
 });
 
@@ -198,12 +179,17 @@ app.use((_req, res) => {
 // Middleware to verify authentication
 async function verifyAuth(req, res, next) {
   const token = req.headers['authorization'];
-  const user = users.find(user => user.token === token);
-  if (user) {
-    req.user = user;
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
+  console.error("token", token);
+  try {
+    const user = await DB.getUserByToken(token)
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(401).send({msg: 'Unauthorized'});
+    }
+  } catch {
+    consle.error('Error verifying user');
   }
 }
 

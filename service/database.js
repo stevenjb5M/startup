@@ -38,6 +38,18 @@ async function addLocation(user, location) {
   await userCollection.updateOne({ email: user.email }, { $addToSet: {locations: location} });
 }
 
+async function removeLocation(user, location) {
+  await userCollection.updateOne({ email: user.email }, { $pull: {locations: location} });
+}
+
+async function addCard(user, cardId) {
+  await userCollection.updateOne({ email: user.email }, { $addToSet: {cards: { cardId, locations: []}} });
+}
+
+async function removeCard(user, cardId) {
+  await userCollection.updateOne({ email: user.email }, { $pull: {cards: { cardId, locations: []}} });
+}
+
 async function addScore(score) {
   return scoreCollection.insertOne(score);
 }
@@ -56,8 +68,11 @@ module.exports = {
   getUser,
   getUserByToken,
   addUser,
+  addCard,
+  removeCard,
   updateUser,
   addScore,
+  removeLocation,
   addLocation,
   getHighScores,
 };
