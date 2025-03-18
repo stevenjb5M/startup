@@ -72,3 +72,10 @@ For this deliverable I added backend endpoints that store cards, locations, and 
 - [x] **Backend service endpoints** - Login, cards, locations endpoints
 - [x] **Frontend calls service endpoints** - Fetch used to call these
 - [x] **Supports registration, login, logout, and restricted endpoint**
+
+## DB/Login deliverable
+
+For this deliverable I store the users data on the database
+
+- [x] **Stores data in MongoDB** - done!
+- [x] **Use MongoDB to store credentials** - Stores both user and their cards and locations.
