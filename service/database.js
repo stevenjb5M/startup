@@ -38,14 +38,14 @@ async function addLocation(user, location) {
   await userCollection.updateOne({ email: user.email }, { $addToSet: {locations: location} });
 }
 
-async function getCards(user) {
-  const user1 = await userCollection.findOne({ email: user.email });
-  console.log(user1);
+async function getCards(email) {
+  const user1 = await userCollection.findOne({ email: email });
+  console.log("user",user1);
   return user1 ? user1.cards : [];
 }
 
 async function removeLocation(user, location) {
-  await userCollection.updateOne({ email: user.email }, { $pull: {locations: location} });
+  await userCollection.updateOne({ email: user.email }, { $pull: { locations: location } } );
 }
 
 async function addCard(user, cardId) {
@@ -53,12 +53,17 @@ async function addCard(user, cardId) {
 }
 
 async function removeCard(user, cardId) {
-  await userCollection.updateOne({ email: user.email }, { $pull: {cards: { cardId, locations: []}} });
+  await userCollection.updateOne({ email: user.email }, { $pull: { cards: { cardId: cardId } } });
 }
 
 async function addLocationToCard(user, cardId, location, cashback) {
   await userCollection.updateOne({ email: user.email, "cards.cardId": cardId }, { $addToSet: {"cards.$.locations": {location, cashback}} });
 }
+
+async function removeLocationFromCard(user, cardId, location) {
+  await userCollection.updateOne({ email: user.email, "cards.cardId": cardId }, { $pull: {"cards.$.locations": { location: location.location } } } );
+}
+
 
 async function addScore(score) {
   return scoreCollection.insertOne(score);
@@ -84,6 +89,7 @@ module.exports = {
   updateUser,
   addScore,
   removeLocation,
+  removeLocationFromCard,
   addLocation,
   addLocationToCard,
   getHighScores,

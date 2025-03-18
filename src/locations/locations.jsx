@@ -125,7 +125,7 @@ export function Locations() {
   async function deleteLocation(locationName) {
     try {
       const response = await fetch('/api/locations', {
-        method: "POST", 
+        method: "DELETE", 
         headers: {
           'Content-Type': 'application/json',
           'Authorization': currentUser.token

@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import "./leaderboard.css";
 import "../main.css";
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 const stores = ['Walmart', 'Target', 'Best Buy', 'Costco', 'Amazon', 'Home Depot', 'Lowe\'s', 'Kroger', 'Walgreens', 'CVS'];
 
@@ -9,10 +11,18 @@ function getRandomStore() {
 }
 
 export function Leaderboard() {
+  const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [randomStore, setRandomStore] = useState(getRandomStore());
   const [quote, setQuote] = useState('Loading...');
 
   useEffect(() => {
+    if (!currentUser.email) {
+      navigate('/');
+    } else {
+      
+    }
+
     const interval = setInterval(() => {
       setRandomStore(getRandomStore());
     }, 5000);

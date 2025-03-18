@@ -95,16 +95,18 @@ apiRouter.get('/locations', verifyAuth, async (req, res) => {
 apiRouter.post('/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const location = req.body.location;
-  DB.addLocation(user,location);  
-  res.send(user.locations);
+  await DB.addLocation(user,location);  
+  const user1 = await DB.getUser(req.user.email);
+  res.send(user1.locations);
 });
 
 // RemoveLocation
-apiRouter.delete('/locations', verifyAuth, (req, res) => {
+apiRouter.delete('/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const location = req.body.location;
-  DB.removeLocation(user,location);  
-  res.send(user.locations);
+  await DB.removeLocation(user,location);
+  const user1 = await DB.getUser(req.user.email);
+  res.send(user1.locations);
 });
 
 // GetCards
@@ -119,8 +121,8 @@ apiRouter.post('/cards', verifyAuth, async (req, res) => {
   const cardId = req.body.cardId;
   
   await DB.addCard(user,cardId);  
-  const updatedUser = await DB.getUser(user.email);
-  res.send(updatedUser.cards);
+  const Cards = await DB.getCards(req.user.email)
+  res.send(Cards);
 
 });
 
@@ -136,34 +138,34 @@ async function findUser(field, value) {
 }
 
 // RemoveCard
-apiRouter.delete('/cards', verifyAuth, (req, res) => {
+apiRouter.delete('/cards', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.body.cardId;
-  
-  DB.removeCard(user,cardId);  
-  res.send(user.cards);
+  console.log(user,cardId);
+  await DB.removeCard(user,cardId);  
+  const Cards = await DB.getCards(req.user.email)
+  res.send(Cards);
 });
 
 // AddLocationToCard
-apiRouter.post('/cards/:cardId/locations', verifyAuth, (req, res) => {
+apiRouter.post('/cards/:cardId/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.params.cardId;
   const { location, cashback } = req.body;
   DB.addLocationToCard(user, cardId, location, cashback);
-  
-  res.send(user.cards);
+  const Cards = await DB.getCards(req.user.email)
+  res.send(Cards);
 });
 
 // RemoveLocationFromCard
-apiRouter.delete('/cards/:cardId/locations', verifyAuth, (req, res) => {
+apiRouter.delete('/cards/:cardId/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.params.cardId;
-  const location = req.body.location;
-  const card = user.cards.find(card => card.cardId === cardId);
-  if (card) {
-    card.locations = card.locations.filter(loc => loc.location !== location);
-  }
-  res.send(user.cards);
+  const { location } = req.body;
+  console.log("Info", user, cardId, location);
+  await DB.removeLocationFromCard(user, cardId, { location });
+  const Cards = await DB.getCards(req.user.email)
+  res.send(Cards);
 });
 
 // Default error handler

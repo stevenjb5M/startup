@@ -90,6 +90,7 @@ export function Cards() {
       if (response.ok) {
         const cards = await response.json();
         setCards(cards);
+        console.log("Deleted card");
       } else {
         console.error('Failed to delete card', response.statusText);
       }
