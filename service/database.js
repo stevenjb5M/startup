@@ -38,6 +38,12 @@ async function addLocation(user, location) {
   await userCollection.updateOne({ email: user.email }, { $addToSet: {locations: location} });
 }
 
+async function getCards(user) {
+  const user1 = await userCollection.findOne({ email: user.email });
+  console.log(user1);
+  return user1 ? user1.cards : [];
+}
+
 async function removeLocation(user, location) {
   await userCollection.updateOne({ email: user.email }, { $pull: {locations: location} });
 }
@@ -48,6 +54,10 @@ async function addCard(user, cardId) {
 
 async function removeCard(user, cardId) {
   await userCollection.updateOne({ email: user.email }, { $pull: {cards: { cardId, locations: []}} });
+}
+
+async function addLocationToCard(user, cardId, location, cashback) {
+  await userCollection.updateOne({ email: user.email, "cards.cardId": cardId }, { $addToSet: {"cards.$.locations": {location, cashback}} });
 }
 
 async function addScore(score) {
@@ -69,10 +79,12 @@ module.exports = {
   getUserByToken,
   addUser,
   addCard,
+  getCards,
   removeCard,
   updateUser,
   addScore,
   removeLocation,
   addLocation,
+  addLocationToCard,
   getHighScores,
 };

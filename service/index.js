@@ -108,18 +108,20 @@ apiRouter.delete('/locations', verifyAuth, (req, res) => {
 });
 
 // GetCards
-apiRouter.get('/cards', verifyAuth, (req, res) => {
-  const user = req.user;
-  res.send(user.cards);
+apiRouter.get('/cards', verifyAuth, async (req, res) => {
+  const Cards = await DB.getCards(req.user.email)
+  res.send(Cards);
 });
 
 // AddCard
-apiRouter.post('/cards', verifyAuth, (req, res) => {
+apiRouter.post('/cards', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.body.cardId;
   
-  DB.addCard(user,cardId);  
-  res.send(user.cards);
+  await DB.addCard(user,cardId);  
+  const updatedUser = await DB.getUser(user.email);
+  res.send(updatedUser.cards);
+
 });
 
 // Function to find a user by a specific field
@@ -147,10 +149,8 @@ apiRouter.post('/cards/:cardId/locations', verifyAuth, (req, res) => {
   const user = req.user;
   const cardId = req.params.cardId;
   const { location, cashback } = req.body;
-  const card = user.cards.find(card => card.cardId === cardId);
-  if (card && !card.locations.find(loc => loc.location === location)) {
-    card.locations.push({ location, cashback });
-  }
+  DB.addLocationToCard(user, cardId, location, cashback);
+  
   res.send(user.cards);
 });
 
