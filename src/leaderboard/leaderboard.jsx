@@ -16,6 +16,10 @@ export function Leaderboard() {
   const [randomStore, setRandomStore] = useState(getRandomStore());
   const [quote, setQuote] = useState('Loading...');
 
+  React.useEffect(() => {
+    
+  }, []);
+
   useEffect(() => {
     if (!currentUser.email) {
       navigate('/');
@@ -23,9 +27,30 @@ export function Leaderboard() {
       
     }
 
-    const interval = setInterval(() => {
-      setRandomStore(getRandomStore());
-    }, 5000);
+    const fetchPopularStore = () => {
+      fetch('/api/popular-store', {
+        headers: {
+          'Authorization': currentUser.token
+        }
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Unauthorized');
+          }
+          return response.json();
+        })
+        .then((store) => {
+          const storeInfo = `${store.location} - ${store.counter} Sales`;
+          setRandomStore(storeInfo);
+        })
+        .catch((error) => {
+          console.error('Error fetching popular store:', error);
+        });
+    };
+
+    fetchPopularStore();
+    const interval = setInterval(fetchPopularStore, 5000);
+
 
     return () => clearInterval(interval);
   }, []);

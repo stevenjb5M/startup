@@ -65,6 +65,31 @@ export function Home() {
     }
   };
 
+  const addStore = async (newLocation) => {
+    try {
+
+      console.log(newLocation);
+
+      const response = await fetch('/api/addStore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': currentUser.token
+        },
+        body: JSON.stringify({ location: newLocation})
+      });
+
+      if (response.ok) {
+        console.error('Added new store', response.statusText);
+
+      } else {
+        console.error('Added new store', response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while adding the store', error);
+    }
+  };
+
   const handleSelectionChange = (event) => {
     const selectedValue = event.target.value;
     console.log(selectedValue);
@@ -73,6 +98,8 @@ export function Home() {
     console.log(locations);
     console.log(location);
     setSelectedLocation(location);
+
+    addStore(location);
 
     // Find the card with the highest cashback percentage for the selected location
     let highestCashback = 0;

@@ -5,7 +5,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db('cardcash');
 const userCollection = db.collection('users');
-const scoreCollection = db.collection('score');
+const storeCollection = db.collection('store');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -64,33 +64,42 @@ async function removeLocationFromCard(user, cardId, location) {
   await userCollection.updateOne({ email: user.email, "cards.cardId": cardId }, { $pull: {"cards.$.locations": { location: location.location } } } );
 }
 
+async function addStore(store) {
+  const existingStore = await storeCollection.findOne({ location: store.location});
 
-async function addScore(score) {
-  return scoreCollection.insertOne(score);
+  if (existingStore) {
+    return storeCollection.updateOne(
+      { location: store.location },
+      { $inc: {counter: 1} }
+    );
+  } else {
+    return storeCollection.insertOne({ location: store.location, counter: 1});
+  }
 }
 
-function getHighScores() {
-  const query = { score: { $gt: 0, $lt: 900 } };
+async function getMostPopularStore() {
+  const query = {}
   const options = {
-    sort: { score: -1 },
-    limit: 10,
+    sort: { counter: -1 },
+    limit: 1,
   };
-  const cursor = scoreCollection.find(query, options);
-  return cursor.toArray();
+  const cursor = storeCollection.find(query, options);
+  const result = await cursor.toArray();
+  return result.length > 0 ? result[0] : null;
 }
 
 module.exports = {
   getUser,
+  addStore,
   getUserByToken,
   addUser,
   addCard,
   getCards,
   removeCard,
   updateUser,
-  addScore,
+  getMostPopularStore,
   removeLocation,
   removeLocationFromCard,
   addLocation,
-  addLocationToCard,
-  getHighScores,
+  addLocationToCard
 };

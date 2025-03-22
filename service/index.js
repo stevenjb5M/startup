@@ -168,6 +168,18 @@ apiRouter.delete('/cards/:cardId/locations', verifyAuth, async (req, res) => {
   res.send(Cards);
 });
 
+// AddStore
+apiRouter.post('/addStore', verifyAuth, async (req, res) => {
+  const { location } = req.body;
+  await DB.addStore({ location });  
+});
+
+// GetPopularStore
+apiRouter.get('/popular-store', verifyAuth, async (req, res) => {
+  const store = await DB.getMostPopularStore();
+  res.send(store);
+});
+
 // Default error handler
 app.use(function (err, req, res, next) {
   res.status(500).send({ type: err.name, message: err.message });
