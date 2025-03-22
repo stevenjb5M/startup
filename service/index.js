@@ -239,7 +239,7 @@ async function verifyAuth(req, res, next) {
       res.status(401).send({msg: 'Unauthorized'});
     }
   } catch {
-    consle.error('Error verifying user');
+    console.error('Error verifying user');
   }
 }
 

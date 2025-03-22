@@ -48,9 +48,23 @@ export function Leaderboard() {
         });
     };
 
+    debugger;
+
     let port = window.location.port ? `:${window.location.port}` : '';
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     const socket = new WebSocket(`${protocol}://${window.location.hostname}${port}/ws`);
+
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+  
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+  
+    socket.onclose = (event) => {
+      console.log('WebSocket connection closed:', event);
+    };
 
     socket.onmessage = async (event) => {
       try {
@@ -58,7 +72,9 @@ export function Leaderboard() {
         if (eventData.type === 'update') {
           fetchPopularStore();
         }
-      } catch {}
+      } catch {
+        console.error('Error processing WebSocket', error);
+      }
     };
 
     fetchPopularStore();
