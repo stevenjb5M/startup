@@ -48,9 +48,20 @@ export function Leaderboard() {
         });
     };
 
-    fetchPopularStore();
-    const interval = setInterval(fetchPopularStore, 5000);
+    let port = window.location.port ? `:${window.location.port}` : '';
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}${port}/ws`);
 
+    socket.onmessage = async (event) => {
+      try {
+        const eventData = JSON.parse(await event.data);
+        if (eventData.type === 'update') {
+          fetchPopularStore();
+        }
+      } catch {}
+    };
+
+    fetchPopularStore();
 
     return () => clearInterval(interval);
   }, []);

@@ -4,6 +4,38 @@ const cors = require('cors');
 const DB = require('./database.js');
 const uuid = require('uuid');
 const app = express();
+const { WebSocketServer } = require('ws');
+const wss = new WebSocketServer({ noServer: true });
+
+const connections = [];
+
+wss.on('connection', (ws) => {
+  const connection = { id: uuid.v4(), alive: true, ws: ws};
+  connections.push(connection);
+
+  ws.on('close', () => {
+    const pos = connections.findIndex((o) => o.id === connection.id);
+    if (pos >= 0) {
+      connections.splice(pos, 1);
+    }
+  });
+
+  ws.on('pong', () => {
+    connection.alive = true;
+  });
+});
+
+setInterval(() => {
+  connections.forEach((c) => {
+    if (!c.alive) {
+      c.ws.terminate();
+    } else {
+      c.alive = false;
+      c.ws.ping();
+    }
+  });
+}, 5000);
+
 
 // The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
@@ -172,6 +204,10 @@ apiRouter.delete('/cards/:cardId/locations', verifyAuth, async (req, res) => {
 apiRouter.post('/addStore', verifyAuth, async (req, res) => {
   const { location } = req.body;
   await DB.addStore({ location });  
+
+  connections.forEach((c) => {
+    c.ws.send(JSON.stringify({type: 'update', message: 'Stored added'}));
+  })
 });
 
 // GetPopularStore
@@ -207,6 +243,12 @@ async function verifyAuth(req, res, next) {
   }
 }
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+const server = app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+server.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit('connection', ws, request);
+  });
 });
