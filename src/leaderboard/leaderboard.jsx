@@ -48,7 +48,6 @@ export function Leaderboard() {
         });
     };
 
-    debugger;
 
     let port = window.location.port ? `:${window.location.port}` : '';
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
