@@ -79,7 +79,9 @@ export function Leaderboard() {
 
     fetchPopularStore();
 
-    return () => clearInterval(interval);
+    return () => {
+      socket.close();
+    };
   }, []);
 
   useEffect(() => {
