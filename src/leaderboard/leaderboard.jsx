@@ -105,7 +105,7 @@ export function Leaderboard() {
   return (
     <main>
       <div id="leaderboard-div">
-        <h2 id="leaderboard-title">Leaderboard(Web Sockets)</h2>
+        <h2 id="leaderboard-title">Leaderboard</h2>
         <ul id="leader-list">
           <li className="card">#1 {randomStore}</li>
         </ul>
