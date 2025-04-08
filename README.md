@@ -79,3 +79,10 @@ For this deliverable I store the users data on the database
 
 - [x] **Stores data in MongoDB** - done!
 - [x] **Use MongoDB to store credentials** - Stores both user and their cards and locations.
+
+## Web Sockets
+
+For this deliverable I added web sockets to get the top store
+
+- [x] **Stores data for top store** - done!
+- [x] **Uses web sockets to get an additional purchase and show it to user** - done!
