@@ -86,3 +86,5 @@ For this deliverable I added web sockets to get the top store
 
 - [x] **Stores data for top store** - done!
 - [x] **Uses web sockets to get an additional purchase and show it to user** - done!
+
+To see the websockts in action. Go to the leaderboard page. There it shows what stores have had the most purchases. A purchase is logged when you are on the home page and select a store, it then gives you the cashback card preferred for this location. This is considered a purchase and logged to the backend. The leaderboard page should update. 
