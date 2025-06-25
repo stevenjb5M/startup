@@ -34,8 +34,29 @@ function AppContent() {
 
     return (
         <div className="body bg-dark text-light">
-            <header>
-                <h1>Welcome to Card Cash</h1>
+            <header style={{position: 'relative'}}>
+                {isLoggedIn && (
+                    <button
+                        onClick={handleLogout}
+                        style={{
+                            position: 'absolute',
+                            left: 24,
+                            top: 24,
+                            background: 'none',
+                            border: 'none',
+                            color: '#1a365d',
+                            fontWeight: 700,
+                            fontSize: 18,
+                            cursor: 'pointer',
+                            padding: 0,
+                            zIndex: 2
+                        }}
+                        aria-label="Logout"
+                    >
+                        Logout
+                    </button>
+                )}
+                <h1 style={{textAlign: 'center', color: '#1a365d'}}>Welcome to Card Cash</h1>
                 <hr />
             </header>
 
