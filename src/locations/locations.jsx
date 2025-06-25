@@ -23,18 +23,18 @@ export function Locations() {
   }, [currentUser, navigate]);
 
   return (
-    <main>
+    <main style={{display: 'flex', justifyContent: 'center', alignItems: 'flex-start', minHeight: '80vh', background: 'transparent'}}>
       <button
         onClick={() => navigate('/home')}
         style={{
           position: 'absolute',
-          left: 24,
-          top: 90,
+          left: 48,
+          top: 110,
           background: 'none',
           border: 'none',
           color: '#fff',
           fontWeight: 700,
-          fontSize: 16,
+          fontSize: 18,
           cursor: 'pointer',
           padding: 0,
           zIndex: 2,
@@ -45,35 +45,35 @@ export function Locations() {
       >
         ← Back
       </button>
-      <div id="locations-div">
-        <h2 id="locations-title">Your Locations</h2>
-        {loading && <p>Loading locations...</p>}
-        {error && <p className="error-message">{error}</p>}
-        <ul id="locations-list">
-          {locations.map((location, index) => (
-            <div className="specific-location-div" key={location + index}>
-              <li key={index} className="location">{location}</li>
-              <button onClick={() => deleteLocation(location)}>Delete</button>
-            </div>
-            
-          ))}
-        </ul>
-
-        <div id="add-remove-buttons">
-          <button className="icon-link" type="button" onClick={openPopup} aria-label="Add Location">
-            <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add location" />
+      <div style={{width: '70vw', minWidth: 700, maxWidth: 1200, marginTop: 48, background: '#f8fafc', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '48px 56px 40px 56px', position: 'relative'}}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32}}>
+          <h2 style={{textAlign: 'left', fontWeight: 800, color: '#1a365d', fontSize: 36, margin: 0, letterSpacing: '-1px'}}>Your Locations</h2>
+          <button className="icon-link" type="button" onClick={openPopup} aria-label="Add Location" style={{background: '#2563eb', color: '#fff', borderRadius: 10, fontWeight: 700, fontSize: 18, padding: '12px 32px', boxShadow: '0 2px 8px rgba(37,99,235,0.08)', display: 'flex', alignItems: 'center', marginLeft: 24}}>
+            <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add location" style={{marginRight: 12, width: 26}} />
+            Add Location
           </button>
         </div>
+        {loading && <p>Loading locations...</p>}
+        {error && <p className="error-message">{error}</p>}
+        <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
+          {locations.map((location, index) => (
+            <li key={index} style={{marginBottom: 22}}>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', padding: '18px 32px'}}>
+                <span style={{fontWeight: 600, fontSize: 22, color: '#1a365d'}}>{location}</span>
+                <button onClick={() => deleteLocation(location)} style={{background: '#e0e7ef', color: '#1a365d', border: 'none', borderRadius: 8, padding: '8px 24px', fontWeight: 700, fontSize: 16, cursor: 'pointer'}}>Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-
       <div id="popup-background" style={{display: 'none'}} onClick={closePopup}></div>
-
-      <div id="popup" style={{ display: 'none' }}>
-        <h3>Enter Location Name</h3>
-        <input type="text" id="location-name" placeholder="Location name" />
-        <br />
-        <button type="button" onClick={addLocation}>Add Location</button>
-        <button type="button" onClick={closePopup}>Close</button>
+      <div id="popup" style={{ display: 'none', minWidth: 400, minHeight: 220, padding: 32, borderRadius: 16, background: '#fff', boxShadow: '0 4px 24px rgba(0,0,0,0.12)', zIndex: 10, justifyContent: 'center', alignItems: 'center', position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
+        <h3 style={{marginBottom: 18, color: '#1a365d', fontWeight: 700, fontSize: 22}}>Enter Location Name</h3>
+        <input type="text" id="location-name" placeholder="Location name" style={{padding: 14, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 18, marginBottom: 18, width: '100%'}} />
+        <div style={{display: 'flex', gap: 16, marginTop: 8}}>
+          <button type="button" onClick={addLocation} style={{background: '#2563eb', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Add Location</button>
+          <button type="button" onClick={closePopup} style={{background: '#e0e7ef', color: '#1a365d', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Close</button>
+        </div>
       </div>
     </main>
   );
