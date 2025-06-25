@@ -12,8 +12,6 @@ export function Cards() {
   const cardsKey = `cards_${userEmail}`;
   const [cards, setCards] = useState([]);
   const [cardName, setCardName] = useState('');
-  const [locationName, setLocationName] = useState('');
-  const [cashBack, setCashBack] = useState('');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -27,18 +25,6 @@ export function Cards() {
   const getCards = () => {
     const storedCards = JSON.parse(localStorage.getItem(cardsKey)) || [];
     setCards(storedCards);
-  };
-
-  const handleCardNameChange = (event) => {
-    setCardName(event.target.value);
-  };
-
-  const handleLocationNameChange = (event) => {
-    setLocationName(event.target.value);
-  };
-
-  const handleCashBackChange = (event) => {
-    setCashBack(event.target.value);
   };
 
   const addCard = () => {
@@ -65,9 +51,9 @@ export function Cards() {
     localStorage.setItem(cardsKey, JSON.stringify(updatedCards));
   };
 
-  const addLocationToCard = (cardId) => {
+  const addLocationToCard = (cardId, locationName, cashBack, setLocalError, resetFields) => {
     if (!locationName || !cashBack) {
-      setError('Location name and cashback percentage are required');
+      setLocalError('Location name and cashback percentage are required');
       return;
     }
 
@@ -81,9 +67,7 @@ export function Cards() {
 
     setCards(updatedCards);
     localStorage.setItem(cardsKey, JSON.stringify(updatedCards));
-    setLocationName('');
-    setCashBack('');
-    closePopup();
+    resetFields();
   };
 
   const removeLocationFromCard = (cardId, location) => {
@@ -142,46 +126,20 @@ export function Cards() {
         {error && <div className="error-message">{error}</div>}
         <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
           {cards.map((card, index) => (
-            <li key={index} style={{marginBottom: 22}}>
-              <div style={{display: 'flex', flexDirection: 'column', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', padding: '18px 32px', marginBottom: 8}}>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                  <span style={{fontWeight: 700, fontSize: 24, color: '#1a365d'}}>{card.cardId}</span>
-                  <button onClick={() => deleteCard(card.cardId)} style={{background: '#e0e7ef', color: '#1a365d', border: 'none', borderRadius: 8, padding: '8px 24px', fontWeight: 700, fontSize: 16, cursor: 'pointer'}}>Delete</button>
-                </div>
-                <ul style={{listStyle: 'none', padding: 0, margin: '16px 0 0 0'}}>
-                  {card.locations && card.locations.map(loc => (
-                    <li key={loc.location} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8}}>
-                      <span style={{fontSize: 18, color: '#1a365d'}}>{loc.location}: {loc.cashback}%</span>
-                      <button onClick={() => removeLocationFromCard(card.cardId, loc.location)} style={{background: '#fca5a5', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 18px', fontWeight: 600, fontSize: 15, cursor: 'pointer'}}>Remove</button>
-                    </li>
-                  ))}
-                </ul>
-                <div style={{display: 'flex', gap: 12, marginTop: 12}}>
-                  <input
-                    type="text"
-                    placeholder="Location name"
-                    value={locationName}
-                    onChange={handleLocationNameChange}
-                    style={{padding: 10, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 16, flex: 1}}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Cash back %"
-                    value={cashBack}
-                    onChange={handleCashBackChange}
-                    style={{padding: 10, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 16, width: 120}}
-                  />
-                  <button onClick={() => addLocationToCard(card.cardId)} style={{background: '#2563eb', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 20px'}}>Add</button>
-                </div>
-              </div>
-            </li>
+            <CardItem
+              key={card.cardId}
+              card={card}
+              onDelete={deleteCard}
+              onAddLocation={addLocationToCard}
+              onRemoveLocation={removeLocationFromCard}
+            />
           ))}
         </ul>
       </div>
       <div id="popup-background" style={{display: 'none'}} onClick={closePopup}></div>
       <div id="popup" style={{ display: 'none', minWidth: 400, minHeight: 220, padding: 32, borderRadius: 16, background: '#fff', boxShadow: '0 4px 24px rgba(0,0,0,0.12)', zIndex: 10, justifyContent: 'center', alignItems: 'center', position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
         <h3 style={{marginBottom: 18, color: '#1a365d', fontWeight: 700, fontSize: 22}}>Enter Card Name</h3>
-        <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={handleCardNameChange} style={{padding: 14, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 18, marginBottom: 18, width: '100%'}} />
+        <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={e => setCardName(e.target.value)} style={{padding: 14, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 18, marginBottom: 18, width: '100%'}} />
         <div style={{display: 'flex', gap: 16, marginTop: 8}}>
           <button type="button" onClick={addCard} style={{background: '#2563eb', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Add Card</button>
           <button type="button" onClick={closePopup} style={{background: '#e0e7ef', color: '#1a365d', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Close</button>
@@ -191,10 +149,58 @@ export function Cards() {
   );
 }
 
-Cards.propTypes = {
-  currentUser: PropTypes.shape({
-    email: PropTypes.string,
-    token: PropTypes.string,
-  }),
-  setCurrentUser: PropTypes.func.isRequired,
+function CardItem({ card, onDelete, onAddLocation, onRemoveLocation }) {
+  const [locationName, setLocationName] = useState('');
+  const [cashBack, setCashBack] = useState('');
+  const [localError, setLocalError] = useState(null);
+
+  const resetFields = () => {
+    setLocationName('');
+    setCashBack('');
+    setLocalError(null);
+  };
+
+  return (
+    <li style={{marginBottom: 22}}>
+      <div style={{display: 'flex', flexDirection: 'column', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', padding: '18px 32px', marginBottom: 8}}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <span style={{fontWeight: 700, fontSize: 24, color: '#1a365d'}}>{card.cardId}</span>
+          <button onClick={() => onDelete(card.cardId)} style={{background: '#e0e7ef', color: '#1a365d', border: 'none', borderRadius: 8, padding: '8px 24px', fontWeight: 700, fontSize: 16, cursor: 'pointer'}}>Delete</button>
+        </div>
+        <ul style={{listStyle: 'none', padding: 0, margin: '16px 0 0 0'}}>
+          {card.locations && card.locations.map(loc => (
+            <li key={loc.location} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8}}>
+              <span style={{fontSize: 18, color: '#1a365d'}}>{loc.location}: {loc.cashback}%</span>
+              <button onClick={() => onRemoveLocation(card.cardId, loc.location)} style={{background: '#fca5a5', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 18px', fontWeight: 600, fontSize: 15, cursor: 'pointer'}}>Remove</button>
+            </li>
+          ))}
+        </ul>
+        <div style={{display: 'flex', gap: 12, marginTop: 12}}>
+          <input
+            type="text"
+            placeholder="Location name"
+            value={locationName}
+            onChange={e => setLocationName(e.target.value)}
+            style={{padding: 10, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 16, flex: 1}}
+          />
+          <input
+            type="text"
+            placeholder="Cash back %"
+            value={cashBack}
+            onChange={e => setCashBack(e.target.value)}
+            style={{padding: 10, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 16, width: 120}}
+          />
+          <button onClick={() => onAddLocation(card.cardId, locationName, cashBack, setLocalError, resetFields)} style={{background: '#2563eb', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 20px'}}>Add</button>
+        </div>
+        {localError && <div className="error-message" style={{marginTop: 8, color: '#e53e3e'}}>{localError}</div>}
+      </div>
+    </li>
+  );
+}
+
+CardItem.propTypes = {
+  card: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onAddLocation: PropTypes.func.isRequired,
+  onRemoveLocation: PropTypes.func.isRequired,
 };
