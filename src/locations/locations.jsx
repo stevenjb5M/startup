@@ -13,6 +13,7 @@ export function Locations() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
     if (!currentUser.email) {
@@ -36,7 +37,7 @@ export function Locations() {
           <h2 className="locations-title">
             Your Locations
           </h2>
-          <img id="plus-button" className="icon-button locations-add-icon" src="plus-solid.svg" alt="Add location" onClick={openPopup} />
+          <img id="plus-button" className="icon-button locations-add-icon" src="plus-solid.svg" alt="Add location" onClick={() => setPopupOpen(true)} />
         </div>
         {loading && <p>Loading locations...</p>}
         {error && <p className="error-message">{error}</p>}
@@ -51,13 +52,13 @@ export function Locations() {
           ))}
         </ul>
       </div>
-      <div id="popup-background" className="locations-popup-bg" onClick={closePopup}></div>
-      <div id="popup" className="locations-popup">
+      <div id="popup-background" className={`locations-popup-bg${popupOpen ? ' open' : ''}`} onClick={() => setPopupOpen(false)}></div>
+      <div id="popup" className={`locations-popup${popupOpen ? ' open' : ''}`}> 
         <h3 className="locations-popup-title">Enter Location Name</h3>
         <input type="text" id="location-name" placeholder="Location name" className="locations-popup-input" />
         <div className="locations-popup-actions">
           <button type="button" onClick={addLocation} className="locations-add-btn">Add Location</button>
-          <button type="button" onClick={closePopup} className="locations-close-btn">Close</button>
+          <button type="button" onClick={() => setPopupOpen(false)} className="locations-close-btn">Close</button>
         </div>
       </div>
     </main>
@@ -95,7 +96,7 @@ export function Locations() {
       localStorage.setItem(locationsKey, JSON.stringify(updatedLocations));
       setError(null);
       document.getElementById('location-name').value = '';
-      closePopup();
+      setPopupOpen(false);
     } catch (error) {
       setError("Failed to add location");
     }
@@ -115,17 +116,8 @@ export function Locations() {
     }
   }
 
-  function openPopup() {
-    document.getElementById('popup').style.display = 'grid';
-    document.getElementById('popup-background').style.display = 'block';
-
-  }
-
-  function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-    document.getElementById('popup-background').style.display = 'none';
-
-  }
+  function openPopup() { setPopupOpen(true); }
+  function closePopup() { setPopupOpen(false); }
 }
 
 Locations.propTypes = {

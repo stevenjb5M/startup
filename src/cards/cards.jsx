@@ -13,6 +13,7 @@ export function Cards() {
   const [cards, setCards] = useState([]);
   const [cardName, setCardName] = useState('');
   const [error, setError] = useState(null);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
     if (!currentUser.email) {
@@ -84,13 +85,11 @@ export function Cards() {
   };
 
   const openPopup = () => {
-    document.getElementById('popup').style.display = 'grid';
-    document.getElementById('popup-background').style.display = 'block';
+    setPopupOpen(true);
   };
 
   const closePopup = () => {
-    document.getElementById('popup').style.display = 'none';
-    document.getElementById('popup-background').style.display = 'none';
+    setPopupOpen(false);
   };
 
   return (
@@ -107,7 +106,7 @@ export function Cards() {
           <h2 className="cards-title">
             Your Cards
           </h2>
-          <img id="plus-button" className="icon-button cards-add-icon" src="plus-solid.svg" alt="Add new card" onClick={openPopup} />
+          <img id="plus-button" className="icon-button cards-add-icon" src="plus-solid.svg" alt="Add new card" onClick={() => setPopupOpen(true)} />
         </div>
         {error && <div className="error-message">{error}</div>}
         <ul className="cards-list">
@@ -122,13 +121,13 @@ export function Cards() {
           ))}
         </ul>
       </div>
-      <div id="popup-background" className="cards-popup-bg" onClick={closePopup}></div>
-      <div id="popup" className="cards-popup">
+      <div id="popup-background" className={`cards-popup-bg${popupOpen ? ' open' : ''}`} onClick={() => setPopupOpen(false)}></div>
+      <div id="popup" className={`cards-popup${popupOpen ? ' open' : ''}`}> 
         <h3 className="cards-popup-title">Enter Card Name</h3>
         <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={e => setCardName(e.target.value)} className="cards-popup-input" />
         <div className="cards-popup-actions">
           <button type="button" onClick={addCard} className="card-add-btn">Add Card</button>
-          <button type="button" onClick={closePopup} style={{background: '#e0e7ef', color: '#1a365d', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Close</button>
+          <button type="button" onClick={() => setPopupOpen(false)} className="card-add-btn cards-close-btn">Close</button>
         </div>
       </div>
     </main>
