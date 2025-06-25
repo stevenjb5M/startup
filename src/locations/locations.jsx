@@ -47,11 +47,10 @@ export function Locations() {
       </button>
       <div style={{width: '70vw', minWidth: 700, maxWidth: 1200, marginTop: 48, background: '#f8fafc', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '48px 56px 40px 56px', position: 'relative'}}>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32}}>
-          <h2 style={{textAlign: 'left', fontWeight: 800, color: '#1a365d', fontSize: 36, margin: 0, letterSpacing: '-1px'}}>Your Locations</h2>
-          <button className="icon-link" type="button" onClick={openPopup} aria-label="Add Location" style={{background: '#2563eb', color: '#fff', borderRadius: 10, fontWeight: 700, fontSize: 18, padding: '12px 32px', boxShadow: '0 2px 8px rgba(37,99,235,0.08)', display: 'flex', alignItems: 'center', marginLeft: 24}}>
-            <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add location" style={{marginRight: 12, width: 26}} />
-            Add Location
-          </button>
+          <h2 style={{textAlign: 'left', fontWeight: 800, color: '#1a365d', fontSize: 36, margin: 0, letterSpacing: '-1px', display: 'flex', alignItems: 'center'}}>
+            Your Locations
+          </h2>
+         <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add location" style={{marginLeft: 16, width: 26, cursor: 'pointer'}} onClick={openPopup} />
         </div>
         {loading && <p>Loading locations...</p>}
         {error && <p className="error-message">{error}</p>}
