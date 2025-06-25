@@ -58,7 +58,7 @@
 }
 
 #popup-background {
-    display: block;
+    display: none;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -101,4 +101,222 @@ button{
     margin: 16px;
     color: white;
     font-size: 21px;
+}
+
+.cards-main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  background: transparent;
+}
+
+.cards-container {
+  width: 70vw;
+  min-width: 700px;
+  max-width: 1200px;
+  margin-top: 48px;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 48px 56px 40px 56px;
+  position: relative;
+}
+
+.cards-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.cards-title {
+  text-align: left;
+  font-weight: 800;
+  color: #1a365d;
+  font-size: 36px;
+  margin: 0;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+}
+
+.cards-add-icon {
+  margin-left: 16px;
+  width: 26px;
+  cursor: pointer;
+}
+
+.cards-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-item {
+  margin-bottom: 22px;
+}
+
+.card-box {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 18px 32px;
+  margin-bottom: 8px;
+}
+
+.card-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-box-title {
+  font-weight: 700;
+  font-size: 24px;
+  color: #1a365d;
+}
+
+.card-delete-btn {
+  background: #e0e7ef;
+  color: #1a365d;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.card-locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0 0;
+}
+
+.card-location-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.card-location-remove {
+  background: #fca5a5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.card-inputs {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.card-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 16px;
+}
+
+.card-input.cashback {
+  width: 120px;
+}
+
+.card-add-btn {
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+.card-error {
+  margin-top: 8px;
+  color: #e53e3e;
+}
+
+.cards-popup-bg {
+  display: none;
+}
+
+.cards-popup {
+  display: none;
+  min-width: 400px;
+  min-height: 220px;
+  padding: 32px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cards-popup-title {
+  margin-bottom: 18px;
+  color: #1a365d;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.cards-popup-input {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 18px;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+.cards-popup-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.cards-back-btn {
+  position: absolute;
+  left: 48px;
+  top: 110px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  margin-bottom: 48px;
+  margin-top: 56px;
+  box-shadow: none;
+}
+
+.cards-popup-actions .card-add-btn + button {
+  background: #e0e7ef;
+  color: #1a365d;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 28px;
+}
+
+.cards-popup,
+.locations-popup,
+.cards-popup-bg,
+.locations-popup-bg {
+  display: none !important;
 }

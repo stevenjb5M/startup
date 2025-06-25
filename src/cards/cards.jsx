@@ -94,37 +94,23 @@ export function Cards() {
   };
 
   return (
-    <main style={{display: 'flex', justifyContent: 'center', alignItems: 'flex-start', minHeight: '80vh', background: 'transparent'}}>
+    <main className="cards-main">
       <button
         onClick={() => navigate('/home')}
-        style={{
-          position: 'absolute',
-          left: 48,
-          top: 110,
-          background: 'none',
-          border: 'none',
-          color: '#fff',
-          fontWeight: 700,
-          fontSize: 18,
-          cursor: 'pointer',
-          padding: 0,
-          zIndex: 2,
-          marginBottom: 48,
-          marginTop: 56
-        }}
+        className="cards-back-btn"
         aria-label="Back to Home"
       >
         ← Back
       </button>
-      <div style={{width: '70vw', minWidth: 700, maxWidth: 1200, marginTop: 48, background: '#f8fafc', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '48px 56px 40px 56px', position: 'relative'}}>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32}}>
-          <h2 style={{textAlign: 'left', fontWeight: 800, color: '#1a365d', fontSize: 36, margin: 0, letterSpacing: '-1px', display: 'flex', alignItems: 'center'}}>
+      <div className="cards-container">
+        <div className="cards-header">
+          <h2 className="cards-title">
             Your Cards
           </h2>
-          <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add new card" style={{marginLeft: 16, width: 26, cursor: 'pointer'}} onClick={openPopup} />
+          <img id="plus-button" className="icon-button cards-add-icon" src="plus-solid.svg" alt="Add new card" onClick={openPopup} />
         </div>
         {error && <div className="error-message">{error}</div>}
-        <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
+        <ul className="cards-list">
           {cards.map((card, index) => (
             <CardItem
               key={card.cardId}
@@ -136,12 +122,12 @@ export function Cards() {
           ))}
         </ul>
       </div>
-      <div id="popup-background" style={{display: 'none'}} onClick={closePopup}></div>
-      <div id="popup" style={{ display: 'none', minWidth: 400, minHeight: 220, padding: 32, borderRadius: 16, background: '#fff', boxShadow: '0 4px 24px rgba(0,0,0,0.12)', zIndex: 10, justifyContent: 'center', alignItems: 'center', position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
-        <h3 style={{marginBottom: 18, color: '#1a365d', fontWeight: 700, fontSize: 22}}>Enter Card Name</h3>
-        <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={e => setCardName(e.target.value)} style={{padding: 14, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 18, marginBottom: 18, width: '100%'}} />
-        <div style={{display: 'flex', gap: 16, marginTop: 8}}>
-          <button type="button" onClick={addCard} style={{background: '#2563eb', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Add Card</button>
+      <div id="popup-background" className="cards-popup-bg" onClick={closePopup}></div>
+      <div id="popup" className="cards-popup">
+        <h3 className="cards-popup-title">Enter Card Name</h3>
+        <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={e => setCardName(e.target.value)} className="cards-popup-input" />
+        <div className="cards-popup-actions">
+          <button type="button" onClick={addCard} className="card-add-btn">Add Card</button>
           <button type="button" onClick={closePopup} style={{background: '#e0e7ef', color: '#1a365d', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 28px'}}>Close</button>
         </div>
       </div>
@@ -153,46 +139,44 @@ function CardItem({ card, onDelete, onAddLocation, onRemoveLocation }) {
   const [locationName, setLocationName] = useState('');
   const [cashBack, setCashBack] = useState('');
   const [localError, setLocalError] = useState(null);
-
   const resetFields = () => {
     setLocationName('');
     setCashBack('');
     setLocalError(null);
   };
-
   return (
-    <li style={{marginBottom: 22}}>
-      <div style={{display: 'flex', flexDirection: 'column', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', padding: '18px 32px', marginBottom: 8}}>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-          <span style={{fontWeight: 700, fontSize: 24, color: '#1a365d'}}>{card.cardId}</span>
-          <button onClick={() => onDelete(card.cardId)} style={{background: '#e0e7ef', color: '#1a365d', border: 'none', borderRadius: 8, padding: '8px 24px', fontWeight: 700, fontSize: 16, cursor: 'pointer'}}>Delete</button>
+    <li className="card-item">
+      <div className="card-box">
+        <div className="card-box-header">
+          <span className="card-box-title">{card.cardId}</span>
+          <button onClick={() => onDelete(card.cardId)} className="card-delete-btn">Delete</button>
         </div>
-        <ul style={{listStyle: 'none', padding: 0, margin: '16px 0 0 0'}}>
+        <ul className="card-locations-list">
           {card.locations && card.locations.map(loc => (
-            <li key={loc.location} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8}}>
-              <span style={{fontSize: 18, color: '#1a365d'}}>{loc.location}: {loc.cashback}%</span>
-              <button onClick={() => onRemoveLocation(card.cardId, loc.location)} style={{background: '#fca5a5', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 18px', fontWeight: 600, fontSize: 15, cursor: 'pointer'}}>Remove</button>
+            <li key={loc.location} className="card-location-item">
+              <span>{loc.location}: {loc.cashback}%</span>
+              <button onClick={() => onRemoveLocation(card.cardId, loc.location)} className="card-location-remove">Remove</button>
             </li>
           ))}
         </ul>
-        <div style={{display: 'flex', gap: 12, marginTop: 12}}>
+        <div className="card-inputs">
           <input
             type="text"
             placeholder="Location name"
             value={locationName}
             onChange={e => setLocationName(e.target.value)}
-            style={{padding: 10, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 16, flex: 1}}
+            className="card-input"
           />
           <input
             type="text"
             placeholder="Cash back %"
             value={cashBack}
             onChange={e => setCashBack(e.target.value)}
-            style={{padding: 10, borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 16, width: 120}}
+            className="card-input cashback"
           />
-          <button onClick={() => onAddLocation(card.cardId, locationName, cashBack, setLocalError, resetFields)} style={{background: '#2563eb', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, padding: '10px 20px'}}>Add</button>
+          <button onClick={() => onAddLocation(card.cardId, locationName, cashBack, setLocalError, resetFields)} className="card-add-btn">Add</button>
         </div>
-        {localError && <div className="error-message" style={{marginTop: 8, color: '#e53e3e'}}>{localError}</div>}
+        {localError && <div className="card-error">{localError}</div>}
       </div>
     </li>
   );

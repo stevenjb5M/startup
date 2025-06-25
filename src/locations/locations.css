@@ -72,4 +72,163 @@ button{
     justify-content: space-between;
 }
 
+.locations-main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  background: transparent;
+}
+
+.locations-container {
+  width: 70vw;
+  min-width: 700px;
+  max-width: 1200px;
+  margin-top: 48px;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 48px 56px 40px 56px;
+  position: relative;
+}
+
+.locations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.locations-title {
+  text-align: left;
+  font-weight: 800;
+  color: #1a365d;
+  font-size: 36px;
+  margin: 0;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+}
+
+.locations-add-icon {
+  margin-left: 16px;
+  width: 26px;
+  cursor: pointer;
+}
+
+.locations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.locations-item {
+  margin-bottom: 22px;
+}
+
+.locations-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 18px 32px;
+}
+
+.locations-box-title {
+  font-weight: 600;
+  font-size: 22px;
+  color: #1a365d;
+}
+
+.locations-delete-btn {
+  background: #e0e7ef;
+  color: #1a365d;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.locations-popup-bg {
+  display: none !important;
+}
+
+.locations-popup {
+  display: none !important;
+  min-width: 400px;
+  min-height: 220px;
+  padding: 32px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.locations-popup-title {
+  margin-bottom: 18px;
+  color: #1a365d;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.locations-popup-input {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 18px;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+.locations-popup-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.locations-add-btn {
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 28px;
+}
+
+.locations-close-btn {
+  background: #e0e7ef;
+  color: #1a365d;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px 28px;
+}
+
+.locations-back-btn {
+  position: absolute;
+  left: 48px;
+  top: 110px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  margin-bottom: 48px;
+  margin-top: 56px;
+  box-shadow: none;
+}
+
 

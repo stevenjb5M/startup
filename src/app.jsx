@@ -33,35 +33,22 @@ function AppContent() {
     };
 
     return (
-        <div className="body bg-dark text-light" style={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
-            <header style={{position: 'relative'}}>
+        <div className="body bg-dark text-light app-root">
+            <header className="app-header">
                 {isLoggedIn && (
                     <button
                         onClick={handleLogout}
-                        style={{
-                            position: 'absolute',
-                            left: 24,
-                            top: 24,
-                            background: 'none',
-                            border: 'none',
-                            color: '#1a365d',
-                            fontWeight: 700,
-                            fontSize: 18,
-                            cursor: 'pointer',
-                            padding: 0,
-                            zIndex: 2,
-                            boxShadow: 'none' // Remove any box-shadow
-                        }}
+                        className="logout-btn"
                         aria-label="Logout"
                     >
                         Logout
                     </button>
                 )}
-                <h1 style={{textAlign: 'center', color: '#1a365d'}}>Welcome to Card Cash</h1>
+                <h1 className="app-title">Welcome to Card Cash</h1>
                 <hr />
             </header>
 
-            <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+            <div className="app-content">
                 <Routes>
                     <Route path='/' element={<Login />} />
                     <Route path='/cards' element={<Cards />} />
@@ -72,7 +59,7 @@ function AppContent() {
                 </Routes>
             </div>
 
-            <footer style={{textAlign: 'center', color: '#fff', background: 'transparent', border: 'none', marginTop: 32, marginBottom: 16, fontSize: 15}}>
+            <footer className="app-footer">
                 © Card Cash 2025 &nbsp;—&nbsp; Contact stevenjbrown95@gmail.com
             </footer>
         </div>

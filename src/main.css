@@ -17,7 +17,6 @@ header {
     display: grid;
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
-    border-radius: 0px 0px 10px 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
 
@@ -165,4 +164,50 @@ button:disabled {
 }
 #piggy-image:hover {
     filter: invert(32%) sepia(94%) saturate(747%) hue-rotate(199deg) brightness(105%) contrast(110%);
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  position: relative;
+}
+
+.logout-btn {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  background: none;
+  border: none;
+  color: #1a365d;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  box-shadow: none;
+}
+
+.app-title {
+  text-align: center;
+  color: #1a365d;
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-footer {
+  text-align: center;
+  color: #fff;
+  background: transparent;
+  border: none;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-size: 15px;
 }

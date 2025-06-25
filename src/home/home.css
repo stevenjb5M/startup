@@ -1,0 +1,105 @@
+/* Home page styles extracted from inline JSX */
+
+#main-div {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.home-title {
+  text-align: center;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 8px;
+  font-size: 32px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-radius: 8px;
+  padding: 8px 0;
+}
+
+.home-desc {
+  text-align: center;
+  color: white;
+  margin-bottom: 32px;
+  font-size: 18px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  padding: 4px 0;
+}
+
+.home-empty {
+  text-align: center;
+  margin: 32px 0;
+}
+
+.home-select-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#dropdown {
+  width: 70%;
+  min-width: 200px;
+  max-width: 400px;
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.loading-spinner {
+  margin: 32px auto;
+}
+
+#cashback-div {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #e0e0e0;
+  padding: 32px;
+  text-align: center;
+}
+
+.cashback-location {
+  color: #1a365d;
+  margin-bottom: 12px;
+}
+
+.cashback-card {
+  font-weight: 600;
+  font-size: 20px;
+  color: #2563eb;
+}
+
+.cashback-amount {
+  font-size: 18px;
+  color: black;
+}
+
+.no-card {
+  color: #b91c1c;
+  font-weight: 500;
+}
+
+.home-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cashback-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cashback-img {
+  width: 48px;
+  margin-bottom: 8px;
+}
+
+.cashback-bold {
+  font-weight: 700;
+}
