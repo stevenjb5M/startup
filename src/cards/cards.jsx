@@ -3,14 +3,18 @@ import "./cards.css";
 import "../main.css";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import PropTypes from 'prop-types';
 
 export function Cards() {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  const userEmail = currentUser?.email || '';
+  const cardsKey = `cards_${userEmail}`;
   const [cards, setCards] = useState([]);
   const [cardName, setCardName] = useState('');
   const [locationName, setLocationName] = useState('');
   const [cashBack, setCashBack] = useState('');
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!currentUser.email) {
@@ -20,24 +24,9 @@ export function Cards() {
     }
   }, [currentUser, navigate]);
 
-  const getCards = async () => {
-    try {
-      const response = await fetch('/api/cards', {
-        method: 'GET',
-        headers: {
-          'Authorization': currentUser.token
-        }
-      });
-
-      if (response.ok) {
-        const cards = await response.json();
-        setCards(cards);
-      } else {
-        console.error('Failed to get cards', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred while getting cards', error);
-    }
+  const getCards = () => {
+    const storedCards = JSON.parse(localStorage.getItem(cardsKey)) || [];
+    setCards(storedCards);
   };
 
   const handleCardNameChange = (event) => {
@@ -52,97 +41,62 @@ export function Cards() {
     setCashBack(event.target.value);
   };
 
-  const addCard = async () => {
-    try {
-      const response = await fetch('/api/cards', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': currentUser.token
-        },
-        body: JSON.stringify({ cardId: cardName })
-      });
-
-      if (response.ok) {
-        const cards = await response.json();
-        setCards(cards);
-        setCardName('');
-        closePopup();
-      } else {
-        console.error('Failed to add card', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred while adding the card', error);
+  const addCard = () => {
+    if (!cardName) {
+      setError('Card name is required');
+      return;
     }
+
+    const newCard = {
+      cardId: cardName,
+      locations: []
+    };
+
+    const updatedCards = [...cards, newCard];
+    setCards(updatedCards);
+    localStorage.setItem(cardsKey, JSON.stringify(updatedCards));
+    setCardName('');
+    closePopup();
   };
 
-  const deleteCard = async (cardId) => {
-    try {
-      const response = await fetch('/api/cards', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': currentUser.token
-        },
-        body: JSON.stringify({ cardId })
-      });
-
-      if (response.ok) {
-        const cards = await response.json();
-        setCards(cards);
-        console.log("Deleted card");
-      } else {
-        console.error('Failed to delete card', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred while deleting the card', error);
-    }
+  const deleteCard = (cardId) => {
+    const updatedCards = cards.filter(card => card.cardId !== cardId);
+    setCards(updatedCards);
+    localStorage.setItem(cardsKey, JSON.stringify(updatedCards));
   };
 
-  const addLocationToCard = async (cardId) => {
-    try {
-      const response = await fetch(`/api/cards/${cardId}/locations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': currentUser.token
-        },
-        body: JSON.stringify({ location: locationName, cashback: cashBack })
-      });
-
-      if (response.ok) {
-        const cards = await response.json();
-        setCards(cards);
-        setLocationName('');
-        setCashBack('');
-      } else {
-        console.error('Failed to add location to card', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred while adding the location to the card', error);
+  const addLocationToCard = (cardId) => {
+    if (!locationName || !cashBack) {
+      setError('Location name and cashback percentage are required');
+      return;
     }
+
+    const updatedCards = cards.map(card => {
+      if (card.cardId === cardId) {
+        const updatedLocations = [...card.locations, { location: locationName, cashback: cashBack }];
+        return { ...card, locations: updatedLocations };
+      }
+      return card;
+    });
+
+    setCards(updatedCards);
+    localStorage.setItem(cardsKey, JSON.stringify(updatedCards));
+    setLocationName('');
+    setCashBack('');
+    closePopup();
   };
 
-  const removeLocationFromCard = async (cardId, location) => {
-    try {
-      const response = await fetch(`/api/cards/${cardId}/locations`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': currentUser.token
-        },
-        body: JSON.stringify({ location })
-      });
-
-      if (response.ok) {
-        const cards = await response.json();
-        setCards(cards);
-      } else {
-        console.error('Failed to remove location from card', response.statusText);
+  const removeLocationFromCard = (cardId, location) => {
+    const updatedCards = cards.map(card => {
+      if (card.cardId === cardId) {
+        const updatedLocations = card.locations.filter(loc => loc.location !== location);
+        return { ...card, locations: updatedLocations };
       }
-    } catch (error) {
-      console.error('An error occurred while removing the location from the card', error);
-    }
+      return card;
+    });
+
+    setCards(updatedCards);
+    localStorage.setItem(cardsKey, JSON.stringify(updatedCards));
   };
 
   const openPopup = () => {
@@ -159,6 +113,7 @@ export function Cards() {
     <main>
       <div id="cards-div">
         <h2 id="cards-title">Your Cards</h2>
+        {error && <div className="error">{error}</div>}
         <ul id="cards-list">
           {cards.map((card, index) => (
             <div key={index} className="specific-card-div">
@@ -210,3 +165,11 @@ export function Cards() {
     </main>
   );
 }
+
+Cards.propTypes = {
+  currentUser: PropTypes.shape({
+    email: PropTypes.string,
+    token: PropTypes.string,
+  }),
+  setCurrentUser: PropTypes.func.isRequired,
+};

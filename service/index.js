@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const cors = require('cors');
-const DB = require('./database.js');
 const uuid = require('uuid');
 const app = express();
 const { WebSocketServer } = require('ws');
@@ -38,7 +37,7 @@ setInterval(() => {
 
 
 // The scores and users are saved in memory and disappear whenever the service is restarted.
-let users = [];
+// let users = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -64,87 +63,93 @@ apiRouter.post('/auth/create', async (req, res) => {
   try {
     console.log('Received request to create user:', req.body);
 
-    const existingUser = await findUser('email', req.body.email);
-    if (existingUser) {
-      console.log('User with this email already exists:', req.body.email);
-      return res.status(409).json({ msg: 'Existing user' });
-    }
+    // const existingUser = await findUser('email', req.body.email);
+    // if (existingUser) {
+    //   console.log('User with this email already exists:', req.body.email);
+    //   return res.status(409).json({ msg: 'Existing user' });
+    // }
 
-    const user = await createUser(req.body.email, req.body.password);
-    res.json({ email: user.email, token: user.token });
+    // const user = await createUser(req.body.email, req.body.password);
+    // res.json({ email: user.email, token: user.token });
+    res.json({ email: req.body.email, token: uuid.v4() });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ msg: 'Internal Server Error' });
   }
 });
 
-// Function to create a new user
-async function createUser(email, password) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { email, password: hashedPassword, locations: [], cards: [], token: uuid.v4() };
+// // Function to create a new user
+// async function createUser(email, password) {
+//   const hashedPassword = await bcrypt.hash(password, 10);
+//   const user = { email, password: hashedPassword, locations: [], cards: [], token: uuid.v4() };
   
-  DB.addUser(user);
+//   DB.addUser(user);
 
-  return user;
-}
+//   return user;
+// }
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
   console.log('Received request to login:', req.body);
 
-  const user = await findUser('email', req.body.email);
-  if (user) {
-    if (await bcrypt.compare(req.body.password, user.password)) {
-      user.token = uuid.v4();
-      await DB.updateUser(user);
-      res.send({ email: user.email, token: user.token });
-      return;
-    }
-  }
+  // const user = await findUser('email', req.body.email);
+  // if (user) {
+  //   if (await bcrypt.compare(req.body.password, user.password)) {
+  //     user.token = uuid.v4();
+  //     await DB.updateUser(user);
+  //     res.send({ email: user.email, token: user.token });
+  //     return;
+  //   }
+  // }
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-  const user = await findUser('email', req.body.email);
-  if (user) {
-    delete user.token;
-    res.status(204).end();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
+  // const user = await findUser('email', req.body.email);
+  // if (user) {
+  //   delete user.token;
+  //   res.status(204).end();
+  // } else {
+  //   res.status(401).send({ msg: 'Unauthorized' });
+  // }
+  res.status(204).end();
 });
 
 // GetLocations
 apiRouter.get('/locations', verifyAuth, async (req, res) => {
   console.log('Received request to get locations:', req.body);
 
-  const user = await DB.getUser(req.user.email);
-  res.send(user.locations);
+  // const user = await DB.getUser(req.user.email);
+  // res.send(user.locations);
+  res.send([]);
 });
 
 // AddLocation
 apiRouter.post('/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const location = req.body.location;
-  await DB.addLocation(user,location);  
-  const user1 = await DB.getUser(req.user.email);
-  res.send(user1.locations);
+  // await DB.addLocation(user,location);  
+  // const user1 = await DB.getUser(req.user.email);
+  // res.send(user1.locations);
+  res.send([]);
 });
 
 // RemoveLocation
 apiRouter.delete('/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const location = req.body.location;
-  await DB.removeLocation(user,location);
-  const user1 = await DB.getUser(req.user.email);
-  res.send(user1.locations);
+  // await DB.removeLocation(user,location);
+  // const user1 = await DB.getUser(req.user.email);
+  // res.send(user1.locations);
+  res.send([]);
 });
 
 // GetCards
 apiRouter.get('/cards', verifyAuth, async (req, res) => {
-  const Cards = await DB.getCards(req.user.email)
-  res.send(Cards);
+  // const Cards = await DB.getCards(req.user.email)
+  // res.send(Cards);
+  res.send([]);
 });
 
 // AddCard
@@ -152,10 +157,10 @@ apiRouter.post('/cards', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.body.cardId;
   
-  await DB.addCard(user,cardId);  
-  const Cards = await DB.getCards(req.user.email)
-  res.send(Cards);
-
+  // await DB.addCard(user,cardId);  
+  // const Cards = await DB.getCards(req.user.email)
+  // res.send(Cards);
+  res.send([]);
 });
 
 // Function to find a user by a specific field
@@ -174,9 +179,10 @@ apiRouter.delete('/cards', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.body.cardId;
   console.log(user,cardId);
-  await DB.removeCard(user,cardId);  
-  const Cards = await DB.getCards(req.user.email)
-  res.send(Cards);
+  // await DB.removeCard(user,cardId);  
+  // const Cards = await DB.getCards(req.user.email)
+  // res.send(Cards);
+  res.send([]);
 });
 
 // AddLocationToCard
@@ -184,9 +190,10 @@ apiRouter.post('/cards/:cardId/locations', verifyAuth, async (req, res) => {
   const user = req.user;
   const cardId = req.params.cardId;
   const { location, cashback } = req.body;
-  DB.addLocationToCard(user, cardId, location, cashback);
-  const Cards = await DB.getCards(req.user.email)
-  res.send(Cards);
+  // DB.addLocationToCard(user, cardId, location, cashback);
+  // const Cards = await DB.getCards(req.user.email)
+  // res.send(Cards);
+  res.send([]);
 });
 
 // RemoveLocationFromCard
@@ -195,15 +202,16 @@ apiRouter.delete('/cards/:cardId/locations', verifyAuth, async (req, res) => {
   const cardId = req.params.cardId;
   const { location } = req.body;
   console.log("Info", user, cardId, location);
-  await DB.removeLocationFromCard(user, cardId, { location });
-  const Cards = await DB.getCards(req.user.email)
-  res.send(Cards);
+  // await DB.removeLocationFromCard(user, cardId, { location });
+  // const Cards = await DB.getCards(req.user.email)
+  // res.send(Cards);
+  res.send([]);
 });
 
 // AddStore
 apiRouter.post('/addStore', verifyAuth, async (req, res) => {
   const { location } = req.body;
-  await DB.addStore({ location });  
+  // await DB.addStore({ location });  
 
   connections.forEach((c) => {
     c.ws.send(JSON.stringify({type: 'update', message: 'Stored added'}));
@@ -212,8 +220,9 @@ apiRouter.post('/addStore', verifyAuth, async (req, res) => {
 
 // GetPopularStore
 apiRouter.get('/popular-store', verifyAuth, async (req, res) => {
-  const store = await DB.getMostPopularStore();
-  res.send(store);
+  // const store = await DB.getMostPopularStore();
+  // res.send(store);
+  res.send([]);
 });
 
 // Default error handler

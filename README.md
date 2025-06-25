@@ -1,3 +1,27 @@
+# Card Cash (Demo Version)
+
+## Overview
+Card Cash helps users maximize cash back by recommending the best credit card to use at various locations. This demo version runs entirely in your browser using localStorage—no backend or database required.
+
+## Features
+- User authentication (localStorage)
+- Manage cards, locations, and cash back rates
+- Leaderboard and fun quotes
+- Responsive, accessible UI
+
+## How to Run
+1. Clone/download this repo
+2. Run `npm install`
+3. Run `npm start`
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+## Notes
+- All data is stored in your browser (localStorage)
+- No backend or database required for this demo
+- For interview/demo purposes only
+
+---
+
 # Startup
 Get the highest cash back wherever you shop! 
 
@@ -87,4 +111,4 @@ For this deliverable I added web sockets to get the top store
 - [x] **Stores data for top store** - done!
 - [x] **Uses web sockets to get an additional purchase and show it to user** - done!
 
-To see the websockts in action. Go to the leaderboard page. There it shows what stores have had the most purchases. A purchase is logged when you are on the home page and select a store, it then gives you the cashback card preferred for this location. This is considered a purchase and logged to the backend. The leaderboard page should update. 
+To see the websockts in action. Go to the leaderboard page. There it shows what stores have had the most purchases. A purchase is logged when you are on the home page and select a store, it then gives you the cashback card preferred for this location. This is considered a purchase and logged to the backend. The leaderboard page should update.

@@ -1,23 +1,34 @@
 body {
     margin: 0px;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background-color: #f4f6fa;
+    color: #222;
 }
 
 .body {
     display: flex;
     flex-direction: column;
     min-width: 375px;
-  }
+    background: #f4f6fa;
+}
 
 header {
     justify-content: center;
     display: grid;
-    background-color: #ff68f626;
-    /* border-bottom: #ff68f6 1px solid; */
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
     border-radius: 0px 0px 10px 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+header h1 {
+    color: #1a365d;
+    font-weight: 700;
+    margin: 24px 0 8px 0;
 }
 
 main {
-    height: 75vh;
+    min-height: 75vh;
     display: grid;
 }
 
@@ -27,14 +38,15 @@ p {
 
 footer {
     justify-content: center;
-    background-color: #ff68f626;
+    background-color: #fff;
     border-radius: 10px 10px 0px 0px;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.03);
 }
 
 #footer-info {
     height: 75px;
-    display: grid
-;
+    display: grid;
     justify-content: center;
     text-align: center;
     align-content: center;
@@ -42,13 +54,27 @@ footer {
 
 button {
     height: 40px;
-    background-color: #ff68f6;
+    background-color: #2563eb;
+    color: #fff;
     border-radius: 5px;
     border-width: 0;
     justify-self: center;
     margin: 25px;
     padding-left: 25px;
     padding-right: 25px;
+    font-weight: 500;
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s;
+}
+
+button:hover:not(:disabled) {
+    background-color: #174ea6;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 #where-text {
@@ -60,6 +86,9 @@ button {
     justify-content: space-evenly;
     align-self: end;
     padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 #main-div {
@@ -73,16 +102,25 @@ button {
     border-radius: 10px;
     margin: 32px;
     justify-self: center;
-    background-color: #ff68f626;
+    background-color: #fff;
+    border: 1px solid #cbd5e1;
     width: 40%;
+    font-size: 16px;
+    color: #222;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .main-buttons {
     width: 150px;
 }
 
-.icon-button{
+.icon-button {
     width: 40px;
+    filter: invert(32%) sepia(94%) saturate(747%) hue-rotate(199deg) brightness(92%) contrast(92%);
+    transition: filter 0.2s;
+}
+.icon-button:hover {
+    filter: invert(32%) sepia(94%) saturate(747%) hue-rotate(199deg) brightness(105%) contrast(110%);
 }
 
 .icon-link {
@@ -91,10 +129,40 @@ button {
 }
 
 #cashback-div {
-    background-color: #432f49;
+    background-color: #f8fafc;
     border-radius: 10px;
     padding: 32px;
     margin: 32px;
     width: 50%;
     justify-self: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e0e0e0;
+}
+
+/* Loading indicator */
+.loading-spinner {
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #2563eb;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Accessibility improvements */
+[aria-label] {
+  outline: none;
+}
+
+#piggy-image {
+    filter: invert(32%) sepia(94%) saturate(747%) hue-rotate(199deg) brightness(92%) contrast(92%);
+    transition: filter 0.2s;
+}
+#piggy-image:hover {
+    filter: invert(32%) sepia(94%) saturate(747%) hue-rotate(199deg) brightness(105%) contrast(110%);
 }

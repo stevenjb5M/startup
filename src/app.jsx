@@ -59,9 +59,6 @@ function AppContent() {
                         </NavLink>
                     </nav>
                 )}
-                <div id="footer-info">
-                    <a href="https://github.com/stevenjb5M/startup.git">Steven Brown's GitHub</a>
-                </div>
             </footer>
         </div>
     );

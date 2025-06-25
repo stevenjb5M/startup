@@ -3,13 +3,16 @@ import "./locations.css";
 import "../main.css";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import PropTypes from 'prop-types';
 
 export function Locations() {
-  const [locations, setLocations] = useState([]);
-  const { currentUser } = useContext(UserContext);
-  const { setCurrentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
-
+  const userEmail = currentUser?.email || '';
+  const locationsKey = `locations_${userEmail}`;
+  const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!currentUser.email) {
@@ -17,12 +20,14 @@ export function Locations() {
     } else {
       getLocations();
     }
-  }, []);
+  }, [currentUser, navigate]);
 
   return (
     <main>
       <div id="locations-div">
         <h2 id="locations-title">Your Locations</h2>
+        {loading && <p>Loading locations...</p>}
+        {error && <p className="error-message">{error}</p>}
         <ul id="locations-list">
           {locations.map((location, index) => (
             <div className="specific-location-div" key={location + index}>
@@ -34,13 +39,13 @@ export function Locations() {
         </ul>
 
         <div id="add-remove-buttons">
-          <a className="icon-link" href="#" onClick={openPopup}>
-            <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Description of image" />
-          </a>
+          <button className="icon-link" type="button" onClick={openPopup} aria-label="Add Location">
+            <img id="plus-button" className="icon-button" src="plus-solid.svg" alt="Add location" />
+          </button>
         </div>
       </div>
 
-      <div id="popup-background" style={{display: 'none'}}></div>
+      <div id="popup-background" style={{display: 'none'}} onClick={closePopup}></div>
 
       <div id="popup" style={{ display: 'none' }}>
         <h3>Enter Location Name</h3>
@@ -53,102 +58,55 @@ export function Locations() {
   );
 
   async function getLocations() {
+    setLoading(true);
     try {
-      const response = await fetch('/api/locations', {
-        method: "GET", 
-        headers: {
-          'Authorization': currentUser.token
-        },
-      });
-
-      if (response.ok) {
-        console.log("Got Locations");
-        let data;
-        try {
-          data = await response.json();
-        } catch (error) {
-          console.error("Failed to parse locations data", error);
-          data = [];
-        }
-
-        if (data)
-        {
-          setLocations(data);
-  
-          const updatedUser = { ...currentUser, locations: data };
-          setCurrentUser(updatedUser);  
-        }
-
-      }
-      else {
-        alert('Failed to get locations');
-      }
+      const storedLocations = localStorage.getItem(locationsKey);
+      const parsedLocations = JSON.parse(storedLocations) || [];
+      setLocations(parsedLocations);
     } catch (error) {
-      alert("An error occured while getting the locations");
+      setError("Failed to load locations");
+    } finally {
+      setLoading(false);
     }
   }
 
   async function addLocation() {
     try {
-      const locationName = document.getElementById('location-name').value;
-
-      const response = await fetch('/api/locations', {
-        method: "POST", 
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': currentUser.token
-        },
-        body: JSON.stringify({location: locationName})
-      });
-
-      if (response.ok) {
-        console.log("Added Location");
-
-        const updatedLocations = [...locations, locationName];
-        console.log("updated locations", updatedLocations);
-        setLocations(updatedLocations);
-
-        const updatedUser = { ...currentUser, locations: updatedLocations };
-        setCurrentUser(updatedUser);
-
-        document.getElementById('location-name').value = '';
-        closePopup();
+      const locationName = document.getElementById('location-name').value.trim();
+      if (!locationName) {
+        setError("Location name cannot be empty");
+        return;
       }
-      else {
-        alert('Failed to add location');
+      // Prevent duplicates (case-insensitive)
+      if (locations.some(loc => loc.trim().toLowerCase() === locationName.toLowerCase())) {
+        setError("Location already exists");
+        return;
       }
+      const updatedLocations = [...locations, locationName];
+      setLocations(updatedLocations);
+      const updatedUser = { ...currentUser, locations: updatedLocations };
+      setCurrentUser(updatedUser);
+      localStorage.setItem(locationsKey, JSON.stringify(updatedLocations));
+      setError(null);
+      document.getElementById('location-name').value = '';
+      closePopup();
     } catch (error) {
-      alert("An error occured while adding the location");
+      setError("Failed to add location");
     }
   }
 
   async function deleteLocation(locationName) {
     try {
-      const response = await fetch('/api/locations', {
-        method: "DELETE", 
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': currentUser.token
-        },
-        body: JSON.stringify({location: locationName})
-      });
+      const updatedLocations = locations.filter(location => location !== locationName);
+      setLocations(updatedLocations);
 
-      if (response.ok) {
-        console.log("deleted Location");
+      const updatedUser = { ...currentUser, locations: updatedLocations };
+      setCurrentUser(updatedUser);
 
-        const updatedLocations = locations.filter(location => location !== locationName);
-        setLocations(updatedLocations);
-
-        const updatedUser = { ...currentUser, locations: updatedLocations };
-        setCurrentUser(updatedUser);
-      }
-      else {
-        alert('Failed to delete location');
-      }
+      localStorage.setItem(locationsKey, JSON.stringify(updatedLocations));
     } catch (error) {
-      alert("An error occured while deleting the location");
+      setError("Failed to delete location");
     }
-    
   }
 
   function openPopup() {
@@ -163,3 +121,12 @@ export function Locations() {
 
   }
 }
+
+Locations.propTypes = {
+  currentUser: PropTypes.shape({
+    email: PropTypes.string,
+    token: PropTypes.string,
+    locations: PropTypes.arrayOf(PropTypes.string),
+  }),
+  setCurrentUser: PropTypes.func.isRequired,
+};

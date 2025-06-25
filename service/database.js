@@ -1,21 +1,18 @@
+// Database logic removed. All data is now managed in local storage via the frontend for demo purposes.
+
+/*
+// --- Original MongoDB database code ---
 const { MongoClient } = require('mongodb');
 const config = require('./dbConfig.json');
-
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
 const db = client.db('cardcash');
 const userCollection = db.collection('users');
 const storeCollection = db.collection('store');
 
-// This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
-  try {
-    await db.command({ ping: 1 });
-    console.log(`Connected to database`);
-  } catch (ex) {
-    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
-    process.exit(1);
-  }
+  await client.connect();
+  await db.command({ ping: 1 });
 })();
 
 function getUser(email) {
@@ -31,61 +28,85 @@ async function addUser(user) {
 }
 
 async function updateUser(user) {
-  await userCollection.updateOne({ email: user.email }, { $set: user });
+  await userCollection.replaceOne({ email: user.email }, user);
 }
 
 async function addLocation(user, location) {
-  await userCollection.updateOne({ email: user.email }, { $addToSet: {locations: location} });
+  await userCollection.updateOne({ email: user.email }, { $push: { locations: location } });
 }
 
 async function getCards(email) {
   const user1 = await userCollection.findOne({ email: email });
-  console.log("user",user1);
-  return user1 ? user1.cards : [];
+  return user1.cards;
 }
 
 async function removeLocation(user, location) {
-  await userCollection.updateOne({ email: user.email }, { $pull: { locations: location } } );
+  await userCollection.updateOne({ email: user.email }, { $pull: { locations: location } });
 }
 
 async function addCard(user, cardId) {
-  await userCollection.updateOne({ email: user.email }, { $addToSet: {cards: { cardId, locations: []}} });
+  await userCollection.updateOne({ email: user.email }, { $push: { cards: { cardId, locations: [] } } });
 }
 
 async function removeCard(user, cardId) {
-  await userCollection.updateOne({ email: user.email }, { $pull: { cards: { cardId: cardId } } });
+  await userCollection.updateOne({ email: user.email }, { $pull: { cards: { cardId } } });
 }
 
 async function addLocationToCard(user, cardId, location, cashback) {
-  await userCollection.updateOne({ email: user.email, "cards.cardId": cardId }, { $addToSet: {"cards.$.locations": {location, cashback}} });
+  await userCollection.updateOne(
+    { email: user.email, 'cards.cardId': cardId },
+    { $push: { 'cards.$.locations': { location, cashback } } }
+  );
 }
 
 async function removeLocationFromCard(user, cardId, location) {
-  await userCollection.updateOne({ email: user.email, "cards.cardId": cardId }, { $pull: {"cards.$.locations": { location: location.location } } } );
+  await userCollection.updateOne(
+    { email: user.email, 'cards.cardId': cardId },
+    { $pull: { 'cards.$.locations': { location } } }
+  );
 }
 
 async function addStore(store) {
-  const existingStore = await storeCollection.findOne({ location: store.location});
-
-  if (existingStore) {
-    return storeCollection.updateOne(
-      { location: store.location },
-      { $inc: {counter: 1} }
-    );
-  } else {
-    return storeCollection.insertOne({ location: store.location, counter: 1});
-  }
+  await storeCollection.insertOne(store);
 }
 
 async function getMostPopularStore() {
-  const query = {}
-  const options = {
-    sort: { counter: -1 },
-    limit: 1,
-  };
-  const cursor = storeCollection.find(query, options);
-  const result = await cursor.toArray();
-  return result.length > 0 ? result[0] : null;
+  return storeCollection.find().sort({ counter: -1 }).limit(1).toArray();
+}
+*/
+
+function getUser(email) {
+  return null;
+}
+
+function getUserByToken(token) {
+  return null;
+}
+
+async function addUser(user) {}
+
+async function updateUser(user) {}
+
+async function addLocation(user, location) {}
+
+async function getCards(email) {
+  return [];
+}
+
+async function removeLocation(user, location) {}
+
+async function addCard(user, cardId) {}
+
+async function removeCard(user, cardId) {}
+
+async function addLocationToCard(user, cardId, location, cashback) {}
+
+async function removeLocationFromCard(user, cardId, location) {}
+
+async function addStore(store) {}
+
+async function getMostPopularStore() {
+  return null;
 }
 
 module.exports = {
