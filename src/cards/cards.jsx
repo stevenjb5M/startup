@@ -121,10 +121,10 @@ export function Cards() {
           ))}
         </ul>
       </div>
-      <div id="popup-background" className={`cards-popup-bg${popupOpen ? ' open' : ''}`} onClick={() => setPopupOpen(false)}></div>
-      <div id="popup" className={`cards-popup${popupOpen ? ' open' : ''}`}> 
+      <div className={`cards-popup-bg${popupOpen ? ' open' : ''}`} onClick={() => setPopupOpen(false)}></div>
+      <div className={`cards-popup${popupOpen ? ' open' : ''}`}> 
         <h3 className="cards-popup-title">Enter Card Name</h3>
-        <input type="text" id="card-name" placeholder="Card name" value={cardName} onChange={e => setCardName(e.target.value)} className="cards-popup-input" />
+        <input type="text" placeholder="Card name" value={cardName} onChange={e => setCardName(e.target.value)} className="cards-popup-input" />
         <div className="cards-popup-actions">
           <button type="button" onClick={addCard} className="card-add-btn">Add Card</button>
           <button type="button" onClick={() => setPopupOpen(false)} className="card-add-btn cards-close-btn">Close</button>
