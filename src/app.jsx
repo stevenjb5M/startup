@@ -33,7 +33,7 @@ function AppContent() {
     };
 
     return (
-        <div className="body bg-dark text-light">
+        <div className="body bg-dark text-light" style={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
             <header style={{position: 'relative'}}>
                 {isLoggedIn && (
                     <button
@@ -60,41 +60,19 @@ function AppContent() {
                 <hr />
             </header>
 
-            <Routes>
-                <Route path='/' element={<Login />} />
-                <Route path='/cards' element={<Cards />} />
-                <Route path='/leaderboard' element={<Leaderboard />} />
-                <Route path='/locations' element={<Locations />} />
-                <Route path='/home' element={<Home />} />
-                <Route path='*' element={<NotFound />} />
-            </Routes>
+            <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+                <Routes>
+                    <Route path='/' element={<Login />} />
+                    <Route path='/cards' element={<Cards />} />
+                    <Route path='/leaderboard' element={<Leaderboard />} />
+                    <Route path='/locations' element={<Locations />} />
+                    <Route path='/home' element={<Home />} />
+                    <Route path='*' element={<NotFound />} />
+                </Routes>
+            </div>
 
-            <footer>
-                {location.pathname !== '/' && (
-                    <nav id="leaderboard-button-div">
-                        {isLoggedIn ? (
-                            <button className="icon-link" style={{background:'none',border:'none',padding:0,margin:0}} onClick={handleLogout} title="Logout">
-                                <img className="icon-button" src="arrow-rotate-left-solid.svg" alt="Logout" />
-                            </button>
-                        ) : (
-                            <NavLink className="icon-link" to="/">
-                                <img className="icon-button" src="user-solid-2.svg" alt="Login" />
-                            </NavLink>
-                        )}
-                        <NavLink className="icon-link" to="/home">
-                            <img className="icon-button" src="house-solid.svg" alt="Home" />
-                        </NavLink>
-                        <NavLink className="icon-link" to="/locations">
-                            <img className="icon-button" src="store-solid.svg" alt="Locations" />
-                        </NavLink>
-                        <NavLink className="icon-link" to="/cards">
-                            <img className="icon-button" src="credit-card-solid.svg" alt="Cards" />
-                        </NavLink>
-                        <NavLink className="icon-link" to="/leaderboard">
-                            <img className="icon-button" src="chart-simple-solid.svg" alt="Leaderboard" />
-                        </NavLink>
-                    </nav>
-                )}
+            <footer style={{textAlign: 'center', color: '#fff', background: 'transparent', border: 'none', marginTop: 32, marginBottom: 16, fontSize: 15}}>
+                © Card Cash 2025 &nbsp;—&nbsp; Contact stevenjbrown95@gmail.com
             </footer>
         </div>
     );

@@ -24,6 +24,27 @@ export function Locations() {
 
   return (
     <main>
+      <button
+        onClick={() => navigate('/home')}
+        style={{
+          position: 'absolute',
+          left: 24,
+          top: 90,
+          background: 'none',
+          border: 'none',
+          color: '#fff',
+          fontWeight: 700,
+          fontSize: 16,
+          cursor: 'pointer',
+          padding: 0,
+          zIndex: 2,
+          marginBottom: 48,
+          marginTop: 56
+        }}
+        aria-label="Back to Home"
+      >
+        ← Back
+      </button>
       <div id="locations-div">
         <h2 id="locations-title">Your Locations</h2>
         {loading && <p>Loading locations...</p>}
