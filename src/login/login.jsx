@@ -10,50 +10,49 @@ export function Login() {
   const { setCurrentUser } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
+  const [createEmail, setCreateEmail] = useState('');
+  const [createPassword, setCreatePassword] = useState('');
+  const [createError, setCreateError] = useState(null);
+  const [createLoading, setCreateLoading] = useState(false);
 
-
-  const handleSubmit = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     const email = event.target.elements['email-input'].value;
     const password = event.target.elements['password-input'].value;
-    const user = {
-      email,
-      password
-    };
-
     setLoading(true);
     setError(null);
-
-    if (event.nativeEvent.submitter.id === 'login-button') {
-      // Refactored: All user authentication/data is now managed in localStorage. API calls removed. Alerts replaced with error UI. PropTypes, loading, and accessibility improvements added.
-      const storedUser = JSON.parse(localStorage.getItem('users'))?.find(u => u.email === email && u.password === password);
-
-      if (storedUser) {
-        setCurrentUser(storedUser);
-        navigate('/home');
-      } else {
-        setError('Invalid email or password');
-      }
-    } else if (event.nativeEvent.submitter.id === 'create-account-button') {
-      if (email !== "" && password !== "") {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const existingUser = users.find(u => u.email === email);
-
-        if (existingUser) {
-          setError('User with this email already exists');
-        } else {
-          users.push(user);
-          localStorage.setItem('users', JSON.stringify(users));
-          setCurrentUser(user);
-          navigate('/home');
-        }
-      } else {
-        setError("Please enter a username and a password");
-      }
-      
+    const storedUser = JSON.parse(localStorage.getItem('users'))?.find(u => u.email === email && u.password === password);
+    if (storedUser) {
+      setCurrentUser(storedUser);
+      navigate('/home');
+    } else {
+      setError('Invalid email or password');
     }
-
     setLoading(false);
+  };
+
+  const handleCreateAccount = async (event) => {
+    event.preventDefault();
+    setCreateLoading(true);
+    setCreateError(null);
+    if (createEmail !== "" && createPassword !== "") {
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const existingUser = users.find(u => u.email === createEmail);
+      if (existingUser) {
+        setCreateError('User with this email already exists');
+      } else {
+        const user = { email: createEmail, password: createPassword };
+        users.push(user);
+        localStorage.setItem('users', JSON.stringify(users));
+        setCurrentUser(user);
+        setShowCreate(false);
+        navigate('/home');
+      }
+    } else {
+      setCreateError("Please enter a username and a password");
+    }
+    setCreateLoading(false);
   };
 
   return (
@@ -61,7 +60,7 @@ export function Login() {
       <div id="login-screen">
         <img id="piggy-image" src="piggy-bank-solid.svg" alt="Description of image" />
 
-        <form id="form" onSubmit={handleSubmit}>
+        <form id="form" onSubmit={handleLogin}>
           <span>Email</span>
           <input id="email-input" type="text" placeholder="your@email.com" />
           <span>Password</span>
@@ -69,11 +68,27 @@ export function Login() {
           <button id="login-button" type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
-          <button id="create-account-button" type="submit" disabled={loading}>
-            {loading ? 'Creating account...' : 'Create Account'}
+          <button type="button" id="create-account-button" onClick={() => setShowCreate(true)}>
+            Create Account
           </button>
           {error && <div className="error-message">{error}</div>}
         </form>
+        {showCreate && (
+          <div className="modal-overlay" onClick={() => setShowCreate(false)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
+              <h2>Create Account</h2>
+              <form onSubmit={handleCreateAccount}>
+                <span>Email</span>
+                <input type="text" value={createEmail} onChange={e => setCreateEmail(e.target.value)} placeholder="your@email.com" />
+                <span>Password</span>
+                <input type="password" value={createPassword} onChange={e => setCreatePassword(e.target.value)} placeholder="password" />
+                <button type="submit" disabled={createLoading}>{createLoading ? 'Creating...' : 'Create'}</button>
+                <button type="button" onClick={() => setShowCreate(false)}>Cancel</button>
+                {createError && <div className="error-message">{createError}</div>}
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
