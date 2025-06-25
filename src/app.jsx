@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './main.css';
 
-import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Cards } from './cards/cards';
 import { Leaderboard } from './leaderboard/leaderboard';
 import { Locations } from './locations/locations';
 import { Login } from './login/login';
 import { Home } from './home/home';
-import { UserProvider } from './context/UserContext';
+import { UserProvider, UserContext } from './context/UserContext';
 
 export default function App() {
     return (
@@ -22,7 +22,16 @@ export default function App() {
 
 function AppContent() {
     const location = useLocation();
-    
+    const navigate = useNavigate();
+    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const isLoggedIn = currentUser && currentUser.email;
+
+    const handleLogout = () => {
+        setCurrentUser({ email: null });
+        localStorage.removeItem('user');
+        navigate('/');
+    };
+
     return (
         <div className="body bg-dark text-light">
             <header>
@@ -42,9 +51,15 @@ function AppContent() {
             <footer>
                 {location.pathname !== '/' && (
                     <nav id="leaderboard-button-div">
-                        <NavLink className="icon-link" to="/">
-                            <img className="icon-button" src="user-solid-2.svg" alt="Login" />
-                        </NavLink>
+                        {isLoggedIn ? (
+                            <button className="icon-link" style={{background:'none',border:'none',padding:0,margin:0}} onClick={handleLogout} title="Logout">
+                                <img className="icon-button" src="arrow-rotate-left-solid.svg" alt="Logout" />
+                            </button>
+                        ) : (
+                            <NavLink className="icon-link" to="/">
+                                <img className="icon-button" src="user-solid-2.svg" alt="Login" />
+                            </NavLink>
+                        )}
                         <NavLink className="icon-link" to="/home">
                             <img className="icon-button" src="house-solid.svg" alt="Home" />
                         </NavLink>
