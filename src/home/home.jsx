@@ -92,7 +92,7 @@ export function Home() {
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                   <img src="credit-card-solid.svg" alt="Best Card" className="icon-button" style={{width: 48, marginBottom: 8}} />
                   <p style={{fontWeight: 600, fontSize: 20, color: '#2563eb'}}>Use your {bestCard} card!</p>
-                  <p style={{fontSize: 18}}>You will earn <span style={{fontWeight: 700}}>{bestCashBack}%</span> back</p>
+                  <p style={{fontSize: 18, color: "black"}}>You will earn <span style={{fontWeight: 700}}>{bestCashBack !== null && bestCashBack !== undefined ? bestCashBack : 0}%</span> back</p>
                 </div>
               </>
             ) : (

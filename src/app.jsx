@@ -49,7 +49,8 @@ function AppContent() {
                             fontSize: 18,
                             cursor: 'pointer',
                             padding: 0,
-                            zIndex: 2
+                            zIndex: 2,
+                            boxShadow: 'none' // Remove any box-shadow
                         }}
                         aria-label="Logout"
                     >
