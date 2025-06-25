@@ -53,7 +53,7 @@ export function Locations() {
         </ul>
       </div>
       <div id="popup-background" className={`locations-popup-bg${popupOpen ? ' open' : ''}`} onClick={() => setPopupOpen(false)}></div>
-      <div id="popup" className={`locations-popup${popupOpen ? ' open' : ''}`}> 
+      <div className={`locations-popup${popupOpen ? ' open' : ''}`}> 
         <h3 className="locations-popup-title">Enter Location Name</h3>
         <input type="text" id="location-name" placeholder="Location name" className="locations-popup-input" />
         <div className="locations-popup-actions">

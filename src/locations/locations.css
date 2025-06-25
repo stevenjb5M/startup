@@ -18,7 +18,7 @@
     margin-right: 25px;
 }
 
-#popup {
+/* #popup {
     display: none;
     width: 50%;
     border-radius: 25px;
@@ -30,7 +30,7 @@
     padding: 16px;
     background-color: rgb(162, 162, 168);
     z-index: 5;
-}
+} */
 
 #popup-background {
     display: block;
@@ -48,11 +48,6 @@
     margin-block-start: 0;
     margin-inline-start: 0;
     padding-inline-start: 0;
-}
-
-#location-name {
-    border-radius: 5px;
-    border: none;
 }
 
 #add-remove-buttons {
